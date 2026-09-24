@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تواصل معنا | انسبكشن — طلب مراجعة فنية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F7F8F6;
+    --bg-warm: #F1F1EC;
+    --ink: #111111;
+    --white: #FFFFFF;
+    --emerald: #4CBCB4;
+    --emerald-deep: #19A99F;
+    --emerald-tint: #E1F6F4;
+    --orange: #D9642C;
+    --orange-tint: #FBEBE1;
+    --line: rgba(17,17,17,0.10);
+    --line-soft: rgba(17,17,17,0.06);
+    --shadow: 0 20px 40px -24px rgba(17,17,17,0.22);
+    --ar: 'IBM Plex Sans Arabic', sans-serif;
+    --en: 'Manrope', sans-serif;
+    --body-en: 'Inter', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--ar);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  a{color:inherit;text-decoration:none;}
+  ul,ol{list-style:none;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 32px;}
+  @media(max-width:640px){.wrap{padding:0 20px;}}
+  :focus-visible{outline:2.5px solid var(--orange); outline-offset:3px; border-radius:2px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  #scrollProgress{position:fixed;top:0;right:0;left:0;height:4px;width:0%;background:linear-gradient(90deg, var(--orange), var(--emerald));z-index:300;transition:width .12s linear;}
+
+  .ticker{background:var(--emerald);color:var(--white);overflow:hidden;white-space:nowrap;position:relative;height:38px;display:flex;align-items:center;}
+  .ticker-track{display:flex;gap:64px;animation: ticker-scroll 26s linear infinite;padding-inline-start:64px;}
+  .ticker-track span{font-family:var(--en);font-size:13px;font-weight:600;letter-spacing:.2px;display:inline-flex;align-items:center;gap:10px;direction:ltr;}
+  @keyframes ticker-scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  .ticker:hover .ticker-track{animation-play-state:paused;}
+
+  /* ---------- Header (matches index.html / services.html) ---------- */
+  header.site{position:sticky;top:0;z-index:100;background:rgba(247,248,246,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);transition:box-shadow .35s ease;}
+  header.site.scrolled{box-shadow:0 14px 32px -24px rgba(17,17,17,.4);}
+  header.site.scrolled .nav-row{padding:10px 32px;}
+  .nav-row{display:flex;align-items:center;justify-content:space-between;padding:18px 32px;flex-wrap:wrap;row-gap:12px;column-gap:24px;transition:padding .35s ease;}
+  .brand{display:flex;align-items:center;gap:28px;min-width:0;}
+  .brand img{height:46px;width:auto;flex-shrink:0;}
+  .brand-text{display:flex;flex-direction:column;gap:3px;min-width:0;}
+  .brand-text .slogan-ar{font-size:14.5px;font-weight:600;color:var(--ink);letter-spacing:.1px;}
+  .brand-text .slogan-en{font-family:var(--body-en);font-size:11.5px;color:#6B6B66;letter-spacing:.4px;direction:ltr;text-align:right;}
+  nav.main-links{display:flex;gap:38px;align-items:center;}
+  nav.main-links a{font-size:16.5px;font-weight:500;color:var(--ink);position:relative;padding:8px 0;letter-spacing:.1px;transition:color .25s ease;}
+  nav.main-links a::after{content:'';position:absolute;right:0;bottom:0;width:0;height:2px;background:var(--orange);transition:width .3s cubic-bezier(.4,0,.2,1);}
+  nav.main-links a:hover::after{width:100%;}
+  nav.main-links a.active{color:var(--emerald);}
+  nav.main-links a.active::after{width:100%;background:var(--emerald);}
+  .nav-cta{display:flex;align-items:center;gap:14px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 26px;border-radius:3px;font-size:15px;font-weight:700;transition:transform .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease;position:relative;}
+  .btn:active{transform:scale(.96);}
+  .btn-primary{background:var(--emerald);color:var(--white);overflow:hidden;isolation:isolate;}
+  .btn-primary::after{content:'';position:absolute;inset:0 auto 0 -40%;width:40%;background:linear-gradient(115deg, transparent, rgba(255,255,255,.4), transparent);transform:skewX(-18deg) translateX(-40%);transition:transform .7s ease;z-index:1;pointer-events:none;}
+  .btn-primary:hover::after{transform:skewX(-18deg) translateX(420%);}
+  .btn-primary:hover{background:var(--emerald-deep);box-shadow:0 12px 24px -10px rgba(25,169,159,.55);}
+  .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--ink);}
+  .burger{display:none;width:26px;height:20px;position:relative;}
+  .burger span{position:absolute;right:0;left:0;height:2px;background:var(--ink);transition:.25s;}
+  .burger span:nth-child(1){top:0;} .burger span:nth-child(2){top:9px;} .burger span:nth-child(3){top:18px;}
+  @media(max-width:1060px){nav.main-links{display:none;} .nav-cta .btn-ghost{display:none;} .burger{display:block;}}
+  @media(max-width:900px){.brand-text .slogan-en{display:none;}}
+  @media(max-width:520px){.brand-text{display:none;} .nav-cta{gap:10px;} .nav-cta .btn-primary{padding:11px 18px;font-size:13.5px;}}
+  .mobile-drawer{position:fixed;inset:0 0 0 auto;width:78%;max-width:320px;background:var(--white);z-index:200;transform:translateX(100%);transition:transform .35s ease;box-shadow:-20px 0 40px rgba(0,0,0,.15);padding:28px 26px;display:flex;flex-direction:column;gap:22px;}
+  .mobile-drawer.open{transform:translateX(0);}
+  .mobile-drawer a{font-size:17px;font-weight:600;padding:8px 0;border-bottom:1px solid var(--line-soft);}
+  .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:150;opacity:0;pointer-events:none;transition:opacity .3s ease;}
+  .drawer-overlay.open{opacity:1;pointer-events:auto;}
+
+  section{padding:104px 0;}
+  @media(max-width:768px){section{padding:64px 0;}}
+  .eyebrow-kicker{font-size:14px;font-weight:600;color:var(--emerald-deep);margin-bottom:14px;}
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ================= HERO: طلب المراجعة + خط سير الطلب المتحرك ================= */
+  .contact-hero{position:relative;background:linear-gradient(180deg,#0C1210 0%,#10171A 60%,#0C1210 100%);color:var(--white);overflow:hidden;padding:88px 0 0;}
+  .ch-bg{position:absolute;inset:0;z-index:0;overflow:hidden;background:#0C1210;}
+  .ch-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.85) brightness(.55);transform:scale(1.04);}
+  .ch-bg::after{content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(12,18,16,.55) 0%, rgba(12,18,16,.78) 55%, rgba(12,18,16,.94) 100%);}
+  .ch-grid{position:absolute;inset:0;z-index:1;opacity:.22;pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.14) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.14) 1px, transparent 1px);
+    background-size:56px 56px;animation:grid-drift 42s linear infinite;}
+  @keyframes grid-drift{from{background-position:0 0,0 0;}to{background-position:-560px 0,0 -560px;}}
+  .contact-hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(ellipse at 25% 15%, rgba(25,169,159,.32), transparent 55%),radial-gradient(ellipse at 85% 90%, rgba(217,100,44,.16), transparent 50%);}
+  .contact-hero .wrap{position:relative;z-index:2;}
+  .ch-inner{max-width:640px;}
+  .ch-inner .eyebrow-kicker{color:#8FD9D0;}
+  .ch-inner h1{font-size:40px;font-weight:700;line-height:1.32;color:var(--white);}
+  .ch-inner p{margin-top:16px;font-size:16px;color:#C9C9C4;max-width:520px;}
+  @media(max-width:640px){.ch-inner h1{font-size:28px;}}
+  .ch-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#EAF3EF;font-size:13px;font-weight:600;padding:8px 16px;border-radius:100px;margin-top:26px;}
+  .ch-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:dot-pulse 1.8s ease-in-out infinite;flex-shrink:0;}
+  @keyframes dot-pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.3);}}
+
+  .ch-route{margin-top:56px;overflow-x:auto;padding-bottom:38px;-webkit-overflow-scrolling:touch;}
+  .ch-route-svg{width:100%;min-width:660px;height:auto;display:block;}
+  .route-line{stroke:rgba(255,255,255,.24);stroke-width:2;stroke-dasharray:6 8;animation:route-flow 1.6s linear infinite;}
+  @keyframes route-flow{to{stroke-dashoffset:-140;}}
+  .station-dot{fill:var(--emerald);stroke:#0C1210;stroke-width:3;}
+  .station-label{font-family:var(--ar);font-size:13px;fill:#EAF3EF;font-weight:600;}
+  .station-sub{font-family:var(--en);font-size:9.5px;fill:#7FA9A0;direction:ltr;}
+  .route-pulse{fill:var(--orange);filter:drop-shadow(0 0 7px rgba(217,100,44,.85));}
+
+  /* ---------- Trust strip ---------- */
+  .sub-hero-bar{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .sub-hero-bar .wrap{display:flex;align-items:center;justify-content:center;gap:16px;padding:16px 32px;flex-wrap:wrap;text-align:center;}
+  .sub-hero-bar span{font-size:14px;font-weight:600;color:#40403C;}
+  .sub-hero-bar .mini-stat{font-family:var(--en);font-weight:800;color:var(--emerald-deep);direction:ltr;}
+  .sub-hero-bar .sep{width:4px;height:4px;border-radius:50%;background:var(--orange);animation:dot-pulse 2.4s ease-in-out infinite;}
+
+  /* ================= طبقة الطلب: الشريط الجانبي + الفورم ================= */
+  .request-layout{display:grid;grid-template-columns:0.82fr 1.3fr;gap:32px;align-items:start;}
+  @media(max-width:960px){.request-layout{grid-template-columns:1fr;}}
+  .request-side{display:flex;flex-direction:column;gap:32px;}
+  @media(max-width:960px){.request-side{order:2;}}
+  .side-block h3{font-size:15px;font-weight:700;margin-bottom:16px;}
+
+  .info-list{display:flex;flex-direction:column;gap:10px;}
+  .info-card{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid var(--line);border-radius:5px;background:var(--white);transition:border-color .2s ease, transform .25s ease, box-shadow .25s ease;}
+  .info-card:hover{border-color:var(--emerald);transform:translateY(-3px);box-shadow:0 14px 26px -18px rgba(17,17,17,.28);}
+  .info-icon{width:22px;height:22px;color:var(--emerald-deep);flex-shrink:0;}
+  .info-icon svg{width:100%;height:100%;}
+  .info-card b{font-size:14.5px;font-weight:700;display:block;direction:ltr;text-align:right;}
+  .info-card span{font-size:12.5px;color:#6B6B66;}
+
+  .mini-steps{display:flex;flex-direction:column;position:relative;}
+  .mini-steps li{display:flex;gap:14px;padding-bottom:22px;position:relative;}
+  .mini-steps li:last-child{padding-bottom:0;}
+  .mini-steps li::before{content:'';position:absolute;top:28px;bottom:0;right:12.5px;width:1.5px;background:var(--line);}
+  .mini-steps li:last-child::before{display:none;}
+  .mini-num{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--emerald);color:var(--emerald-deep);font-family:var(--en);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--white);position:relative;z-index:1;}
+  .mini-steps b{font-size:14px;font-weight:700;display:block;margin-bottom:2px;}
+  .mini-steps p{font-size:13px;color:#6B6B66;}
+
+  .map-card{position:relative;border-radius:6px;overflow:hidden;background:var(--ink);min-height:176px;display:flex;align-items:center;justify-content:center;}
+  .map-grid{position:absolute;inset:0;opacity:.35;background-image:linear-gradient(rgba(220,243,240,.18) 1px, transparent 1px),linear-gradient(90deg, rgba(220,243,240,.18) 1px, transparent 1px);background-size:26px 26px;}
+  .map-pin{position:relative;z-index:2;}
+  .pin-ring{position:absolute;inset:-14px;border-radius:50%;border:1.5px solid var(--orange);opacity:0;animation:pin-ping 2.4s ease-out infinite;}
+  .pin-ring.delay{animation-delay:1.2s;}
+  @keyframes pin-ping{0%{opacity:.7;transform:scale(.4);}100%{opacity:0;transform:scale(2.1);}}
+  .pin-icon{width:30px;height:30px;color:var(--orange);position:relative;z-index:2;display:block;}
+  .map-caption{position:absolute;bottom:12px;right:0;left:0;text-align:center;font-size:12px;color:#B9D3CE;font-family:var(--en);direction:ltr;z-index:2;}
+
+  /* ---------- Form ---------- */
+  .form-shell{background:var(--white);border:1px solid var(--line);border-radius:6px;padding:52px;box-shadow:var(--shadow);}
+  @media(max-width:960px){.form-shell{order:1;}}
+  @media(max-width:640px){.form-shell{padding:28px;}}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  @media(max-width:700px){.form-grid{grid-template-columns:1fr;}}
+  .field{display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(10px);transition:opacity .5s ease, transform .5s ease;}
+  .field.full{grid-column:1/-1;}
+  .reveal.in .field{opacity:1;transform:translateY(0);}
+  .form-grid .field:nth-child(1){transition-delay:.04s;}
+  .form-grid .field:nth-child(2){transition-delay:.09s;}
+  .form-grid .field:nth-child(3){transition-delay:.14s;}
+  .form-grid .field:nth-child(4){transition-delay:.19s;}
+  .form-grid .field:nth-child(5){transition-delay:.24s;}
+  .form-grid .field:nth-child(6){transition-delay:.29s;}
+  .form-grid .field:nth-child(7){transition-delay:.34s;}
+  .form-grid .field:nth-child(8){transition-delay:.39s;}
+  .field label{font-size:14px;font-weight:600;}
+  .field select, .field input[type=text], .field input[type=email], .field input[type=tel], .field input[type=number]{
+    border:1px solid var(--line);border-radius:3px;padding:13px 14px;font-size:15px;
+    font-family:inherit;background:var(--bg);color:var(--ink);transition:border-color .2s ease, background .2s ease, box-shadow .2s ease;
+  }
+  .field select:focus, .field input:focus{outline:2px solid var(--emerald);outline-offset:1px;background:var(--white);}
+  .checkbox-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:520px){.checkbox-grid{grid-template-columns:1fr;}}
+  .checkbox-item{display:flex;align-items:center;gap:10px;font-size:14.5px;padding:12px 14px;border:1px solid var(--line);border-radius:3px;background:var(--bg);transition:border-color .2s ease, background .2s ease;}
+  .checkbox-item:has(input:checked){border-color:var(--emerald);background:var(--emerald-tint);}
+  .checkbox-item input{width:17px;height:17px;accent-color:var(--emerald);}
+  .dropzone{border:2px dashed var(--line);border-radius:4px;padding:40px 20px;text-align:center;background:var(--bg);transition:border-color .2s ease, background .2s ease;cursor:pointer;}
+  .dropzone.drag{border-color:var(--emerald);background:var(--emerald-tint);}
+  .dropzone svg{width:34px;height:34px;color:var(--emerald);margin:0 auto 12px;transition:transform .3s ease;}
+  .dropzone:hover svg{transform:translateY(-3px);}
+  .dropzone p{font-size:14px;color:#5A5A54;}
+  .dropzone .fname{margin-top:10px;font-size:13.5px;font-weight:600;color:var(--emerald-deep);}
+  .form-submit-row{display:flex;justify-content:flex-start;margin-top:8px;}
+  .form-success{display:none;text-align:center;padding:40px 10px;}
+  .form-success.show{display:block;animation:hero-fade .5s ease;}
+  .form-success .check{width:52px;height:52px;color:var(--emerald);margin:0 auto 10px;}
+  @keyframes hero-fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  input[type=file]{display:none;}
+
+  .stamp-wrap{display:flex;justify-content:center;margin-bottom:6px;}
+  .success-stamp{width:74px;height:74px;border-radius:50%;border:2.5px solid var(--emerald-deep);color:var(--emerald-deep);
+    display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;transform:rotate(-8deg);opacity:.95;position:relative;}
+  .success-stamp::before{content:'';position:absolute;inset:5px;border:1px solid var(--emerald-deep);border-radius:50%;}
+  .success-stamp b{font-family:var(--en);font-size:10.5px;letter-spacing:.4px;direction:ltr;}
+  .success-stamp span{font-size:9px;font-family:var(--en);direction:ltr;margin-top:2px;}
+  .success-stamp.pop{animation:stamp-down .55s cubic-bezier(.2,.9,.25,1);}
+  @keyframes stamp-down{0%{opacity:0;transform:scale(1.9) rotate(-24deg);}60%{opacity:1;transform:scale(.9) rotate(-5deg);}100%{opacity:.95;transform:scale(1) rotate(-8deg);}}
+
+  /* ---------- Footer (matches index.html / services.html) ---------- */
+  footer{background:var(--ink);color:#D7D7D2;padding-top:80px;}
+  .footer-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:40px;padding-bottom:56px;border-bottom:1px solid rgba(255,255,255,.12);}
+  @media(max-width:900px){.footer-top{grid-template-columns:1fr 1fr;}}
+  @media(max-width:520px){.footer-top{grid-template-columns:1fr;}}
+  .footer-brand img{height:40px;margin-bottom:18px;}
+  .footer-brand p{font-size:14px;color:#A9A9A3;max-width:260px;}
+  footer h5{font-size:15.5px;font-weight:700;color:var(--white);margin-bottom:19px;letter-spacing:.1px;}
+  footer ul li{margin-bottom:12px;font-size:14.5px;}
+  footer ul li a:hover{color:var(--emerald);}
+  .footer-bottom{display:flex;justify-content:space-between;align-items:center;padding:26px 0;font-size:13px;color:#8C8C87;flex-wrap:wrap;gap:10px;}
+  .footer-bottom .en{font-family:var(--body-en);direction:ltr;}
+</style>
+</head>
+<body>
+
+<div id="scrollProgress"></div>
+
+<div class="ticker">
+  <div class="ticker-track" id="tickerTrack">
+    <span>📞 920001234</span>
+    <span>✉ info@inspection.sa</span>
+    <span>📞 920001234</span>
+    <span>✉ info@inspection.sa</span>
+    <span>📞 920001234</span>
+    <span>✉ info@inspection.sa</span>
+    <span>📞 920001234</span>
+    <span>✉ info@inspection.sa</span>
+  </div>
+</div>
+
+<header class="site">
+  <div class="nav-row">
+    <a href="index.html" class="brand">
+      <img src="./Screenshot_2026-09-13_091306-removebg-preview.png" alt="انسبكشن — Inspection" style="height: 65px; width: auto;">
+      <div class="brand-text">
+        <span class="slogan-ar">امتثال. استدامة. سلامة. جودة حياة</span>
+        <span class="slogan-en">Compliance. Sustainability. Safety. Life Quality</span>
+      </div>
+    </a>
+    <nav class="main-links">
+      <a href="index.html#hero">انسبكشن</a>
+      <a href="services.html">الخدمات</a>
+      <a href="index.html#sectors">القطاعات</a>
+      <a href="index.html#projects">مشاريعنا</a>
+      <a href="index.html#blog">الأخبار</a>
+      <a href="index.html#portal">بوابة العميل</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="index.html#portal" class="btn btn-ghost">نافذة التحقق</a>
+      <a href="contact.html" class="btn btn-primary">اطلب الخدمة</a>
+      <button class="burger" id="burgerBtn" aria-label="فتح القائمة">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="index.html#hero">انسبكشن</a>
+  <a href="services.html">الخدمات</a>
+  <a href="index.html#sectors">القطاعات</a>
+  <a href="index.html#projects">مشاريعنا</a>
+  <a href="index.html#blog">الأخبار</a>
+  <a href="index.html#portal">بوابة العميل</a>
+  <a href="contact.html" class="btn btn-primary" style="text-align:center;border:none;">اطلب الخدمة</a>
+</div>
+
+<!-- ================= HERO: طلب مراجعة فنية + خط سير الطلب ================= -->
+<section class="contact-hero">
+  <div class="ch-bg">
+    <img class="ch-bg-img" src="./WhatsApp Image 2026-09-13 at 4.14.26 PM (4).jpeg" alt="">
+  </div>
+  <div class="ch-grid"></div>
+  <div class="wrap">
+    <div class="ch-inner">
+      <div class="eyebrow-kicker">صفحة التواصل</div>
+      <h1>طلب مراجعة فنية</h1>
+      <p>أدخل بيانات مشروعك، اختر الخدمات المطلوبة، وارفع المخططات — تابع رحلة طلبك أدناه من لحظة الإرسال حتى التقرير.</p>
+      <div class="ch-badge"><span class="dot"></span> الرد الأول خلال يوم عمل واحد</div>
+    </div>
+
+    <div class="ch-route">
+      <svg class="ch-route-svg" viewBox="0 0 720 150" aria-hidden="true">
+        <line class="route-line" x1="680" y1="80" x2="40" y2="80"/>
+
+        <g transform="translate(680,80)">
+          <circle class="station-dot" r="7"/>
+          <text class="station-sub" x="0" y="-22" text-anchor="middle">اليوم</text>
+          <text class="station-label" x="0" y="36" text-anchor="middle">استلام الطلب</text>
+        </g>
+        <g transform="translate(467,80)">
+          <circle class="station-dot" r="7"/>
+          <text class="station-sub" x="0" y="-22" text-anchor="middle">٧–١٤ يوم عمل</text>
+          <text class="station-label" x="0" y="36" text-anchor="middle">المراجعة الفنية</text>
+        </g>
+        <g transform="translate(254,80)">
+          <circle class="station-dot" r="7"/>
+          <text class="station-sub" x="0" y="-22" text-anchor="middle">نسخة رسمية</text>
+          <text class="station-label" x="0" y="36" text-anchor="middle">تقرير المطابقة</text>
+        </g>
+        <g transform="translate(40,80)">
+          <circle class="station-dot" r="7"/>
+          <text class="station-sub" x="0" y="-22" text-anchor="middle">عند الحاجة</text>
+          <text class="station-label" x="0" y="36" text-anchor="middle">إعادة التقييم</text>
+        </g>
+
+        <circle class="route-pulse" r="5">
+          <animateMotion id="pulseMotion" dur="6s" repeatCount="indefinite" path="M680,80 L40,80"/>
+        </circle>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="sub-hero-bar">
+  <div class="wrap">
+    <span><b class="mini-stat" data-target="460" data-suffix="+">0</b> مشروع تمت مراجعته</span><span class="sep"></span>
+    <span><b class="mini-stat" data-target="98" data-suffix="%">0</b> رضا العملاء</span><span class="sep"></span>
+    <span><b class="mini-stat" data-target="1" data-suffix="">0</b> يوم للرد الأول</span>
+  </div>
+</div>
+
+<!-- ================= الشريط الجانبي + نموذج الطلب ================= -->
+<section id="request">
+  <div class="wrap">
+    <div class="request-layout">
+
+      <aside class="request-side reveal">
+        <div class="side-block">
+          <h3>بيانات التواصل</h3>
+          <ul class="info-list">
+            <li class="info-card">
+              <span class="info-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 8h8l4 10-6 4a20 20 0 0 0 10 10l4-6 10 4v8a4 4 0 0 1-4 4A28 28 0 0 1 10 12a4 4 0 0 1 4-4z"/></svg></span>
+              <div><b>920001234</b><span>خط العملاء</span></div>
+            </li>
+            <li class="info-card">
+              <span class="info-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="8" y="12" width="32" height="24" rx="2"/><path d="M8 14l16 14 16-14"/></svg></span>
+              <div><b>info@inspection.sa</b><span>البريد الإلكتروني</span></div>
+            </li>
+            <li class="info-card">
+              <span class="info-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M24 44s14-13 14-24a14 14 0 1 0-28 0c0 11 14 24 14 24z"/><circle cx="24" cy="20" r="5"/></svg></span>
+              <div><b>الرياض</b><span>المملكة العربية السعودية</span></div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="side-block">
+          <h3>ماذا يحدث بعد الإرسال؟</h3>
+          <ol class="mini-steps">
+            <li><span class="mini-num">1</span><div><b>تأكيد الاستلام</b><p>رسالة تأكيد فورية ببيانات طلبك</p></div></li>
+            <li><span class="mini-num">2</span><div><b>مراجعة فنية أولية</b><p>فريقنا يحدد نطاق العمل والمدة</p></div></li>
+            <li><span class="mini-num">3</span><div><b>عرض السعر والمدة</b><p>نرسل تفاصيل واضحة خلال يوم عمل</p></div></li>
+          </ol>
+        </div>
+
+        <div class="side-block">
+          <div class="map-card">
+            <div class="map-grid"></div>
+            <div class="map-pin">
+              <span class="pin-ring"></span>
+              <span class="pin-ring delay"></span>
+              <svg class="pin-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M24 44s14-13 14-24a14 14 0 1 0-28 0c0 11 14 24 14 24z"/><circle cx="24" cy="20" r="5"/></svg>
+            </div>
+            <div class="map-caption">RIYADH · SAUDI ARABIA</div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="form-shell reveal">
+        <form id="requestForm">
+          <div class="form-grid" style="margin-bottom:24px;">
+            <div class="field">
+              <label>نوع المشروع</label>
+              <select required>
+                <option value="">اختر نوع المشروع</option>
+                <option>فيلا</option>
+                <option>دوبلكس</option>
+                <option>تاون هاوس</option>
+                <option>مبنى سكني</option>
+                <option>أخرى</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>موقع المشروع</label>
+              <input type="text" placeholder="المدينة / الحي" required>
+            </div>
+            <div class="field">
+              <label>مساحة المشروع (م²)</label>
+              <input type="number" placeholder="مثال: 350" required>
+            </div>
+            <div class="field">
+              <label>عدد الطوابق</label>
+              <input type="number" placeholder="مثال: 3" required>
+            </div>
+            <div class="field full">
+              <label>مرحلة التصميم</label>
+              <select required>
+                <option value="">اختر المرحلة</option>
+                <option>تصميم أولي</option>
+                <option>تصميم تفصيلي</option>
+                <option>قبل التقديم</option>
+                <option>قبل البدء في البناء</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label>الخدمات المطلوبة</label>
+              <div class="checkbox-grid">
+                <label class="checkbox-item"><input type="checkbox"> تصميم معماري</label>
+                <label class="checkbox-item"><input type="checkbox"> تصميم إنشائي</label>
+                <label class="checkbox-item"><input type="checkbox"> أعمال كهربائية</label>
+                <label class="checkbox-item"><input type="checkbox"> أعمال ميكانيكية</label>
+                <label class="checkbox-item"><input type="checkbox"> أعمال السباكة</label>
+                <label class="checkbox-item"><input type="checkbox"> أنظمة السلامة من الحرائق والسلامة العامة</label>
+                <label class="checkbox-item" style="grid-column:1/-1;"><input type="checkbox"> مراجعة شاملة</label>
+              </div>
+            </div>
+            <div class="field full">
+              <label>رفع المخططات</label>
+              <div class="dropzone" id="dropzone">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M24 32V12M16 20l8-8 8 8"/><path d="M10 32v6h28v-6"/></svg>
+                <p>اسحب وأفلت الملفات هنا أو اضغط للاختيار (PDF, DWG)</p>
+                <div class="fname" id="fname"></div>
+              </div>
+              <input type="file" id="fileInput">
+            </div>
+            <div class="field"><label>الاسم / الشركة</label><input type="text" required></div>
+            <div class="field"><label>رقم الجوال</label><input type="tel" required></div>
+            <div class="field full"><label>البريد الإلكتروني</label><input type="email" required></div>
+          </div>
+          <div class="form-submit-row"><button type="submit" class="btn btn-primary">إرسال لطلب سعر</button></div>
+        </form>
+        <div class="form-success" id="formSuccess">
+          <div class="stamp-wrap"><span class="success-stamp" id="successStamp"><b>RECEIVED</b><span>SBC</span></span></div>
+          <svg class="check" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="20"/><path d="M15 24l6 6 12-14"/></svg>
+          <h3 style="font-size:22px;font-weight:700;margin-bottom:10px;">تم استلام طلبك بنجاح</h3>
+          <p style="color:#5A5A54;">سيتواصل معك فريقنا الفني خلال يوم عمل واحد لمناقشة تفاصيل المراجعة.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="./Screenshot_2026-09-13_091306-removebg-preview.png" alt="انسبكشن" style="width: 100px; height: auto;">
+        <p>جهة مستقلة للمراجعة الفنية والتفتيش الهندسي، معتمدة على كود البناء السعودي.</p>
+      </div>
+      <div><h5>الشركة</h5><ul><li><a href="index.html#hero">من نحن</a></li><li><a href="#">الوظائف</a></li><li><a href="index.html#projects">مشاريعنا</a></li></ul></div>
+      <div><h5>الخدمات</h5><ul><li><a href="services.html">المراجعة الفنية</a></li><li><a href="index.html#faq">الأسئلة الشائعة</a></li><li><a href="contact.html">اطلب الخدمة</a></li></ul></div>
+      <div><h5>المرجعية</h5><ul><li><a href="#">دليل SBC</a></li><li><a href="#">الشروط والأحكام</a></li><li><a href="#">سياسة الخصوصية</a></li></ul></div>
+      <div><h5>تواصل معنا</h5><ul><li>920001234</li><li>info@inspection.sa</li><li>الرياض، المملكة العربية السعودية</li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 انسبكشن. جميع الحقوق محفوظة.</span>
+      <span class="en">Inspection Services</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const progressBar = document.getElementById('scrollProgress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progressBar.style.width = scrolled + '%';
+  });
+
+  const burger = document.getElementById('burgerBtn');
+  const drawer = document.getElementById('mobileDrawer');
+  const overlay = document.getElementById('drawerOverlay');
+  function closeDrawer(){ drawer.classList.remove('open'); overlay.classList.remove('open'); }
+  burger.addEventListener('click', () => { drawer.classList.toggle('open'); overlay.classList.toggle('open'); });
+  overlay.addEventListener('click', closeDrawer);
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+
+  const siteHeader = document.querySelector('header.site');
+  window.addEventListener('scroll', () => {
+    siteHeader.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  const dropzone = document.getElementById('dropzone');
+  const fileInput = document.getElementById('fileInput');
+  const fname = document.getElementById('fname');
+  dropzone.addEventListener('click', () => fileInput.click());
+  ['dragenter','dragover'].forEach(ev => dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.add('drag'); }));
+  ['dragleave','drop'].forEach(ev => dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.remove('drag'); }));
+  dropzone.addEventListener('drop', e => {
+    const f = e.dataTransfer.files[0];
+    if(f){ fname.textContent = '📎 ' + f.name; }
+  });
+  fileInput.addEventListener('change', () => { if(fileInput.files[0]) fname.textContent = '📎 ' + fileInput.files[0].name; });
+
+  const requestForm = document.getElementById('requestForm');
+  const formSuccess = document.getElementById('formSuccess');
+  const successStamp = document.getElementById('successStamp');
+  requestForm.addEventListener('submit', e => {
+    e.preventDefault();
+    requestForm.style.display = 'none';
+    formSuccess.classList.add('show');
+    successStamp.classList.remove('pop');
+    void successStamp.offsetWidth;
+    successStamp.classList.add('pop');
+  });
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('in'); io.unobserve(entry.target); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+
+  /* ---------- عداد الإحصائيات ---------- */
+  const statNums = document.querySelectorAll('.mini-stat');
+  const countIo = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const el = entry.target;
+        const target = parseFloat(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const duration = 1200;
+        const start = performance.now();
+        function step(now){
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(target * eased) + suffix;
+          if(p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+        countIo.unobserve(el);
+      }
+    });
+  }, { threshold: 0.4 });
+  statNums.forEach(el => countIo.observe(el));
+
+  /* ---------- احترام تفضيل تقليل الحركة لخط سير الطلب ---------- */
+  if(prefersReduced){
+    const pulse = document.querySelector('.route-pulse');
+    const pulseMotion = document.getElementById('pulseMotion');
+    if(pulseMotion) pulseMotion.setAttribute('dur', '0.01s');
+    if(pulse) pulse.style.opacity = '0';
+  }
+</script>
+</body>
+</html>

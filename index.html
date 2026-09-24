@@ -15,7 +15,7 @@
     --emerald: #4CBCB4;
     --emerald-deep: #19A99F;
     --emerald-tint: #E1F6F4;
-    --orange: #D9642C;
+    --orange: #F46627;
     --orange-tint: #FBEBE1;
     --line: rgba(17,17,17,0.10);
     --line-soft: rgba(17,17,17,0.06);
@@ -172,7 +172,7 @@
 
   .hero{
     position:relative;
-    min-height:92vh;
+    max-height:81vh;
     display:flex; align-items:center;
     background: linear-gradient(180deg,#0C1210 0%, #10171A 55%, #0C1210 100%);
     overflow:hidden;
@@ -253,7 +253,7 @@
 
   section{padding:120px 0;}
   @media(max-width:768px){section{padding:76px 0;}}
-  .eyebrow-kicker{font-size:14px;font-weight:600;color:var(--emerald);margin-bottom:14px;}
+  .eyebrow-kicker{font-size:16px;font-weight:600;color:var(--emerald);margin-bottom:14px;}
   .section-head{max-width:680px;margin-bottom:64px;}
   .section-head h2{font-size:40px;font-weight:700;line-height:1.3;}
   .section-head h2 .accent{color:var(--orange);}
@@ -261,16 +261,20 @@
   .section-alt{background:var(--white);}
 
   .services-grid{
-    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
-    background:var(--line); border:1px solid var(--line);
+    display:grid; grid-template-columns:repeat(4,1fr);
+    gap:22px;
+    background:transparent; border:none;
   }
   @media(max-width:980px){.services-grid{grid-template-columns:repeat(2,1fr);}}
-  @media(max-width:560px){.services-grid{grid-template-columns:1fr;}}
+  @media(max-width:560px){.services-grid{grid-template-columns:1fr; gap:16px;}}
+
+  /* الكارت بقى perspective wrapper */
   .service-card{
-    background:var(--bg); padding:38px 30px;
-    transition:background .25s ease, transform .35s ease, box-shadow .35s ease, opacity .5s ease;
-    position:relative;
+    background:transparent;
+    perspective:1000px;
+    height:270px;
     opacity:0; transform:translateY(18px);
+    transition:opacity .5s ease, transform .5s ease;
   }
   .services-grid.in .service-card{opacity:1; transform:translateY(0);}
   .services-grid .service-card:nth-child(1){transition-delay:.03s;}
@@ -281,34 +285,275 @@
   .services-grid .service-card:nth-child(6){transition-delay:.28s;}
   .services-grid .service-card:nth-child(7){transition-delay:.33s;}
   .services-grid .service-card:nth-child(8){transition-delay:.38s;}
-  .service-card:hover{background:var(--white); transform:translateY(-6px); box-shadow:0 22px 40px -28px rgba(17,17,17,.28); z-index:2;}
-  .service-card .icon{width:44px;height:44px;color:var(--emerald);margin-bottom:26px; transition:transform .4s ease;}
-  .service-card:hover .icon{transform:rotate(-8deg) scale(1.1);}
-  .service-card h3{font-size:19px;font-weight:600;margin-bottom:10px;}
-  .service-card p{font-size:14.5px;color:#5A5A54;}
-  .service-card .num{
-    position:absolute; top:24px; left:30px; font-family:var(--en); font-size:12px;
+
+  /* الطبقة اللي بتتقلب فعليا */
+  .flip-inner{
+    position:relative;
+    width:100%; height:100%;
+    transition:transform .8s cubic-bezier(.22,.9,.32,1.1);
+    transform-style:preserve-3d;
+  }
+  .service-card:hover .flip-inner{transform:rotateY(180deg) scale(1.03);}
+
+  .flip-face{
+    position:absolute; inset:0;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+    padding:36px 28px;
+    display:flex; flex-direction:column;
+    border-radius:14px;
+    border:1px solid var(--line);
+    box-shadow:0 10px 26px -18px rgba(17,17,17,.18);
+    transition:box-shadow .5s ease;
+  }
+  .service-card:hover .flip-face{
+    box-shadow:0 30px 50px -24px rgba(17,17,17,.32);
+  }
+
+  /* الوش الأمامي */
+  .flip-front{
+    background:var(--bg);
+  }
+  .flip-front .icon{width:44px;height:44px;color:var(--emerald);margin-bottom:26px; transition:transform .4s ease;}
+  .service-card:hover .flip-front .icon{transform:rotate(-8deg) scale(1.1);}
+  .flip-front h3{font-size:19px;font-weight:600;margin-bottom:10px;}
+  .flip-front p{font-size:14.5px;color:#5A5A54;}
+
+  /* الوش الخلفي */
+  .flip-back{
+    background:var(--emerald);
+    border-color:var(--emerald);
+    color:#fff;
+    transform:rotateY(180deg);
+    justify-content:center;
+  }
+  .flip-back h4{font-size:17px;font-weight:600;margin-bottom:14px;}
+  .flip-back p{font-size:14px;line-height:1.9;color:rgba(255,255,255,.9);}
+  .flip-back ul{margin-top:14px; padding-inline-start:18px; font-size:13.5px; line-height:2; color:rgba(255,255,255,.85);}
+
+  .num{
+    position:absolute; top:22px; left:28px; font-family:var(--en); font-size:12px;
     color:#B9B9B2; direction:ltr;
   }
+  .flip-back .num{color:rgba(255,255,255,.55);}
 
-  .cost-banners{
-    display:grid; grid-template-columns:1fr auto 1fr auto 1fr; align-items:center; gap:0;
-  }
-  @media(max-width:860px){.cost-banners{grid-template-columns:1fr; gap:18px;}}
-  .cost-stage{
-    background:var(--white); border:1px solid var(--line); padding:34px 28px; text-align:center;
-    border-radius:4px; transition:transform .3s ease, box-shadow .3s ease;
-  }
-  .cost-stage:hover{transform:translateY(-4px); box-shadow:var(--shadow);}
-  .cost-stage.hot{border-color:var(--orange); background:var(--orange-tint);}
-  .cost-stage .bar{height:8px;border-radius:2px;background:var(--emerald);margin:0 auto 20px; transform-origin:right; animation:bar-grow 1.1s cubic-bezier(.3,.9,.4,1) both;}
-  @keyframes bar-grow{from{transform:scaleX(0);}to{transform:scaleX(1);}}
-  .cost-stage.hot .bar{background:var(--orange);}
-  .cost-stage h4{font-size:18px;font-weight:700;margin-bottom:8px;}
-  .cost-stage p{font-size:14px;color:#5A5A54;}
-  .cost-arrow{display:flex;align-items:center;justify-content:center;color:#B9B9B2;font-size:26px;}
-  @media(max-width:860px){.cost-arrow{transform:rotate(90deg);}}
+.cost-flow{ position: relative; }
 
+.cost-curve{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  animation: curve-in 1.4s ease .6s forwards;
+}
+@keyframes curve-in{ to{ opacity: 1; } }
+
+.curve-line{
+  stroke-dasharray: 4 4;
+  vector-effect: non-scaling-stroke;
+}
+
+.curve-dot{
+  fill: var(--white);
+  stroke: var(--orange);
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+}
+
+.flow-step, .flow-connector{
+  position: relative;
+  z-index: 1;
+}
+
+.flow-step{
+  width:100%; display:flex;
+  opacity:0;
+  animation:step-in .7s cubic-bezier(.2,.8,.2,1) forwards;
+}
+.flow-step.start{ justify-content:flex-start; }
+.flow-step.end{ justify-content:flex-end; }
+.flow-step .cost-stage{ width:62%; }
+
+.flow-step:nth-of-type(1){ animation-delay:.1s; }
+.flow-step:nth-of-type(3){ animation-delay:.85s; }
+.flow-step:nth-of-type(5){ animation-delay:1.6s; }
+
+@keyframes step-in{
+  from{ opacity:0; transform:translateY(22px) scale(.96); }
+  to{ opacity:1; transform:translateY(0) scale(1); }
+}
+
+.flow-connector{ position:relative; width:100%; height:90px; }
+/* === مؤشر مضاعف التكلفة في الفراغ === */
+.flow-step{
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+.flow-step.end .cost-stage{ order: 2; }
+.flow-step.end .cost-visual{ order: 1; }
+.flow-step.start .cost-stage{ order: 1; }
+.flow-step.start .cost-visual{ order: 2; }
+
+.cost-visual{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:.85;
+}
+.cost-visual svg{
+  width:100%;
+  max-width:190px;
+  height:auto;
+  color: var(--emerald);
+  overflow:visible;
+}
+.flow-step:nth-child(3) .cost-visual svg{ color:var(--orange); }
+.flow-step:nth-child(5) .cost-visual svg{ color:#c9531f; }
+
+@media(max-width:640px){
+  .cost-visual{ display:none; }
+}
+/* الساق الأولى: طالعة من حافة الكارت المصدر لحد ما توصل ارتفاع الخط الأفقي */
+.elbow-v-start{
+  position:absolute; top:0; width:2px; height:26px;
+  transform:translateX(-50%);
+  transform-origin:top center;
+  animation:grow-y-start .35s ease both;
+}
+@keyframes grow-y-start{ from{transform:translateX(-50%) scaleY(0);} to{transform:translateX(-50%) scaleY(1);} }
+
+.elbow-h{
+  position:absolute; top:26px; height:2px;
+  transform-origin:right center;
+  animation:grow-x .6s ease .35s both; /* بعد الساق الأولى */
+}
+@keyframes grow-x{ from{transform:scaleX(0);} to{transform:scaleX(1);} }
+
+.elbow-v{
+  position:absolute; top:26px; width:2px; height:42px;
+  transform:translateX(-50%);
+  transform-origin:top center;
+  animation:grow-y .5s ease .9s both; /* بعد الأفقي */
+}
+@keyframes grow-y{ from{transform:translateX(-50%) scaleY(0);} to{transform:translateX(-50%) scaleY(1);} }
+
+.elbow-arrow{
+  position:absolute; top:64px; width:0; height:0;
+  transform:translateX(-50%);
+  border-left:6px solid transparent;
+  border-right:6px solid transparent;
+  opacity:0;
+  animation:show-arrow .3s ease 1.3s forwards, arrow-bounce 1.3s ease-in-out 1.6s infinite;
+}
+@keyframes show-arrow{ to{opacity:1;} }
+@keyframes arrow-bounce{
+  0%,100%{ transform:translateX(-50%) translateY(0); }
+  50%{ transform:translateX(-50%) translateY(5px); }
+}
+/* المسار الأول: من مركز كارت 01 (31%) إلى مركز كارت 02 (69%) */
+.h1{ left:31%; width:38%; background:var(--emerald); }
+.v1{ left:69%; background:var(--emerald); }
+.a1{ left:69%; border-top:9px solid var(--emerald); }
+
+/* المسار التاني: من مركز كارت 02 (69%) إلى مركز كارت 03 (31%) */
+.h2{ left:31%; width:38%; background:var(--orange); }
+.v2{ left:31%; background:var(--orange); }
+.a2{ left:31%; border-top:9px solid var(--orange); }
+
+.cost-stage{
+  position:relative;
+  background:var(--white);
+  border:1px solid var(--line);
+  padding:38px 30px 32px;
+  text-align:center;
+  border-radius:10px;
+  overflow:hidden;
+  transition:
+    transform .35s cubic-bezier(.2,.8,.2,1),
+    box-shadow .35s ease,
+    border-color .35s ease,
+    background-color .35s ease;
+  animation:stage-float 4.5s ease-in-out infinite;
+  box-shadow:0 8px 20px -16px rgba(17,17,17,.25);
+}
+
+.cost-stage:hover{
+  animation-play-state:paused;
+  transform:translateY(-8px) scale(1.02);
+  box-shadow:0 24px 40px -20px rgba(17,17,17,.35);
+  border-color:var(--emerald);
+}
+
+.cost-stage.hot{
+  border-color:var(--orange);
+  background-color:var(--orange-tint);
+  animation:stage-float 4.5s ease-in-out infinite, hot-pulse 2.4s ease-in-out infinite;
+}
+.cost-stage.hot:hover{
+  animation-play-state:paused;
+  border-color:var(--orange);
+}
+
+.cost-stage::before{
+  content:'';
+  position:absolute; top:0; right:0; left:0; height:4px;
+  background:linear-gradient(90deg, var(--emerald), var(--emerald-deep));
+  transform:scaleX(0); transform-origin:right;
+  animation:accent-grow 1s cubic-bezier(.2,.8,.2,1) .3s forwards;
+}
+.cost-stage.hot::before{
+  background:linear-gradient(90deg, var(--orange), #c9531f);
+}
+@keyframes accent-grow{ to{ transform:scaleX(1); } }
+
+@keyframes stage-float{
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-5px); }
+}
+@keyframes hot-pulse{
+  0%,100%{ box-shadow:0 8px 20px -16px rgba(17,17,17,.25), 0 0 0 0 rgba(217,100,44,.28); }
+  50%{ box-shadow:0 8px 20px -16px rgba(17,17,17,.25), 0 0 0 12px rgba(217,100,44,0); }
+}
+
+.stage-index{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:38px; height:38px; margin:0 auto 18px;
+  border-radius:50%;
+  background:var(--emerald-tint);
+  color:var(--emerald-deep);
+  font-family:var(--en); font-weight:800; font-size:14px;
+  direction:ltr;
+  transition:background .3s ease, color .3s ease, transform .3s ease;
+}
+.cost-stage.hot .stage-index{
+  background:var(--orange); color:var(--white);
+}
+.cost-stage:hover .stage-index{ transform:scale(1.12); }
+
+.cost-stage h4{
+  font-size:19px; font-weight:700; margin-bottom:10px; letter-spacing:.1px;
+}
+.cost-stage p{
+  font-size:14px; color:#5A5A54; line-height:1.75; max-width:230px; margin:0 auto;
+}
+/* موبايل: عمود بسيط بدون خطوط */
+@media(max-width:640px){
+  .flow-step.start, .flow-step.end{ justify-content:center; }
+  .flow-step .cost-stage{ width:92%; }
+  .flow-connector{ height:40px; }
+  .elbow-h, .elbow-v, .elbow-arrow{ display:none; }
+  .flow-connector::after{
+    content:"↓"; position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px; color:#B9B9B2;
+    animation:arrow-bounce 1.3s ease-in-out infinite;
+  }
+}
   .journey{position:relative;}
   .journey-line{
     position:absolute; top:26px; right:6%; left:6%; height:2px; background:var(--line);
@@ -339,25 +584,124 @@
   .journey-step h4{font-size:16.5px;font-weight:600;margin-bottom:8px;}
   .journey-step p{font-size:13.5px;color:#5A5A54;}
 
-  .sbc-list{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-  @media(max-width:900px){.sbc-list{grid-template-columns:1fr;}}
-  .sbc-card{
-    background:var(--emerald-deep); color:var(--white); padding:36px 30px; border-radius:4px;
-    position:relative; overflow:hidden;
-    opacity:0; transform:translateY(18px); transition:opacity .5s ease, transform .5s ease, box-shadow .3s ease;
+.pyramid-wrap{ position:relative; }
+
+.pyramid-center{
+  position:absolute;
+  top: calc(300px * 0.866);
+  left:50%;
+  transform:translateX(-50%) scale(.85);
+  width:300px;
+  aspect-ratio:1 / 0.866;
+  clip-path:polygon(50% 100%, 0% 0%, 100% 0%);
+  background:transparent;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  animation: center-pop .6s cubic-bezier(.2,.8,.2,1) .6s forwards;
+  z-index:2;
+  pointer-events:none;
+}
+@keyframes center-pop{
+  from{ opacity:0; transform:translateX(-50%) scale(.5); }
+  to{ opacity:1; transform:translateX(-50%) scale(.85); }
+}
+.pyramid-center .pyramid-logo{
+  margin-bottom: 70px;
+  width:140px;
+  height:auto;
+  object-fit:contain;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,.15));
+  animation: center-glow 2.4s ease-in-out infinite;
+}
+@keyframes center-glow{
+  0%,100%{ filter:drop-shadow(0 0 0 rgba(255,255,255,0)); }
+  50%{ filter:drop-shadow(0 0 6px rgba(255,255,255,.65)); }
+}
+
+/* الشكل الكبير بره: توهج خفيف حوالين المثلث الوسطي */
+/* لو عايز تفضل فيه توهج خفيف بدل الأورانج */
+.pyramid-center::after{
+  content:'';
+  position:absolute; inset:-14px;
+  clip-path:polygon(50% 100%, 0% 0%, 100% 0%);
+  background:radial-gradient(circle at 50% 30%, rgba(0,0,0,.12), transparent 70%);
+  z-index:-1;
+  animation: center-halo 2.4s ease-in-out infinite;
+}
+@keyframes center-halo{
+  0%,100%{ opacity:.4; }
+  50%{ opacity:.9; }
+}
+
+@media(max-width:640px){
+  .pyramid-center{ display:none; }
+}
+.pyramid-row{ display:flex; justify-content:center; }
+.pyramid-bottom{ display:flex; justify-content:center; gap:0; }
+
+.sbc-card.tri{
+  width:300px;
+  aspect-ratio:1 / 0.866;
+  clip-path:polygon(50% 0%, 0% 100%, 100% 100%);
+  background:var(--emerald-deep);
+  position:relative;
+  opacity:0; transform:translateY(18px);
+  transition:opacity .5s ease, transform .5s ease, filter .3s ease;
+}
+.pyramid-wrap.in .sbc-card.tri{opacity:1; transform:translateY(0);}
+.pyramid-top .sbc-card.tri{transition-delay:.05s;}
+.pyramid-bottom .sbc-card.tri:nth-child(1){transition-delay:.15s;}
+.pyramid-bottom .sbc-card.tri:nth-child(2){transition-delay:.25s;}
+
+.sbc-card.tri:hover{filter:brightness(1.08);}
+
+/* الشارة الرقمية عند قمة المثلث */
+.tri-badge{
+  position:absolute; top:-16px; left:50%; transform:translateX(-50%);
+  width:34px; height:34px; border-radius:50%;
+  background:var(--white); color:var(--emerald-deep);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--en); font-weight:800; font-size:13px;
+  border:2px solid var(--emerald-deep);
+  box-shadow:0 6px 14px -6px rgba(0,0,0,.35);
+  z-index:2;
+}
+
+/* المحتوى يتحط في الجزء العريض أسفل المثلث */
+.tri-content{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+  padding:0 30px 28px;
+  text-align:center;
+}
+.tri-content .code{
+  font-family:var(--en); font-size:11px; font-weight:700; letter-spacing:1px;
+  color:#8FE0D6; direction:ltr; margin-bottom:6px; display:block;
+}
+.tri-content h3{font-size:16px; font-weight:700; color:#fff; margin-bottom:6px;}
+.tri-content p{font-size:12px; line-height:1.6; color:#CFE6DC; max-width:82%;}
+
+/* على الشاشات الصغيرة: نرجع لكروت عادية مرتبة عموديًا بدل الهرم */
+@media(max-width:640px){
+  .pyramid-wrap{max-width:100%;}
+  .pyramid-row, .pyramid-bottom{
+    display:flex; flex-direction:column; gap:20px; width:100%;
   }
-  .sbc-list.in .sbc-card{opacity:1; transform:translateY(0);}
-  .sbc-list .sbc-card:nth-child(1){transition-delay:.05s;}
-  .sbc-list .sbc-card:nth-child(2){transition-delay:.15s;}
-  .sbc-list .sbc-card:nth-child(3){transition-delay:.25s;}
-  .sbc-card:hover{box-shadow:0 24px 40px -26px rgba(18,128,119,.6); transform:translateY(-4px);}
-  .sbc-card::before{
-    content:''; position:absolute; inset:-40% -40% auto auto; width:140px; height:140px; border-radius:50%;
-    background:rgba(255,255,255,.06);
+  .sbc-card.tri{
+    width:100%; aspect-ratio:auto;
+    clip-path:none; border-radius:6px;
   }
-  .sbc-card .code{font-family:var(--en); font-size:13px; font-weight:700; letter-spacing:1px; color:#8FE0D6; direction:ltr;}
-  .sbc-card h3{font-size:21px;font-weight:700;margin:14px 0 12px;}
-  .sbc-card p{font-size:14px; color:#CFE6DC;}
+  .tri-badge{
+    position:static; transform:none; margin:0 auto 14px;
+  }
+  .tri-content{
+    position:static; padding:0 24px 26px; justify-content:flex-start;
+  }
+  .tri-content p{max-width:100%;}
+}
 
   .audience{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line);}
   @media(max-width:860px){.audience{grid-template-columns:1fr;}}
@@ -366,65 +710,351 @@
   .audience-panel .tag{font-size:13px;font-weight:700;color:var(--orange);margin-bottom:16px;}
   .audience-panel h3{font-size:28px;font-weight:700;margin-bottom:16px;line-height:1.35;}
   .audience-panel p{font-size:15.5px;color:#4B4B45;margin-bottom:28px;max-width:440px;}
-  .audience-panel.dark{background:var(--ink);color:var(--white);}
-  .audience-panel.dark p{color:#C9C9C4;}
+.audience-panel.dark{
+  background:linear-gradient(135deg, var(--emerald) 0%, #19A99F 100%);
+  color:var(--white);
+  position:relative;
+  overflow:hidden;
+}
+.audience-panel.dark::before{
+  content:'';
+  position:absolute; inset:0;
+  background:
+    radial-gradient(circle at 85% 15%, rgba(255,255,255,.12), transparent 45%),
+    radial-gradient(circle at 10% 90%, rgba(0,0,0,.15), transparent 50%);
+  pointer-events:none;
+}
+.audience-panel.dark > *{ position:relative; z-index:1; }
+.audience-panel.dark p{color:rgba(255,255,255,.85);}
+.audience-panel.dark .btn-outline-white:hover{background:rgba(255,255,255,.15);}
 
-  .pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;}
-  @media(max-width:900px){.pillars{grid-template-columns:1fr 1fr;}}
-  @media(max-width:520px){.pillars{grid-template-columns:1fr;}}
-  .pillar{
-    border-top:2px solid var(--ink); padding-top:22px; transition:transform .3s ease;
-    opacity:0; transform:translateY(18px);
-  }
-  .pillars.in .pillar{opacity:1; transform:translateY(0);}
-  .pillars .pillar:nth-child(1){transition-delay:.05s;}
-  .pillars .pillar:nth-child(2){transition-delay:.13s;}
-  .pillars .pillar:nth-child(3){transition-delay:.21s;}
-  .pillars .pillar:nth-child(4){transition-delay:.29s;}
-  .pillar:hover{transform:translateY(-5px);}
-  .pillar .icon{width:34px;height:34px;color:var(--orange);margin-bottom:20px; transition:transform .4s ease;}
-  .pillar:hover .icon{transform:rotate(10deg) scale(1.12);}
-  .pillar h4{font-size:17px;font-weight:700;margin-bottom:10px;}
-  .pillar p{font-size:14px;color:#5A5A54;}
+.pillars{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+}
+@media(max-width:900px){.pillars{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.pillars{grid-template-columns:1fr;}}
 
-  .blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
-  @media(max-width:900px){.blog-grid{grid-template-columns:1fr;}}
-  .blog-card{
-    background:var(--bg);border:1px solid var(--line);border-radius:4px;overflow:hidden;
-    transition:box-shadow .3s ease, transform .3s ease, opacity .5s ease;
-    opacity:0; transform:translateY(18px);
-  }
-  .blog-grid.in .blog-card{opacity:1; transform:translateY(0);}
-  .blog-grid .blog-card:nth-child(1){transition-delay:.05s;}
-  .blog-grid .blog-card:nth-child(2){transition-delay:.15s;}
-  .blog-grid .blog-card:nth-child(3){transition-delay:.25s;}
-  .blog-card:hover{box-shadow:var(--shadow); transform:translateY(-6px);}
-  .blog-card .thumb{height:170px; background:linear-gradient(135deg,var(--emerald-tint),var(--orange-tint)); position:relative; overflow:hidden;}
-  .blog-card .thumb svg{position:absolute;inset:0;margin:auto;width:52px;height:52px;color:var(--emerald); transition:transform .5s ease;}
-  .blog-card:hover .thumb svg{transform:scale(1.15) rotate(-6deg);}
-  .blog-card .body{padding:24px;}
-  .blog-card .cat{font-size:12px;font-weight:700;color:var(--emerald);margin-bottom:10px;}
-  .blog-card h4{font-size:17px;font-weight:700;line-height:1.5;margin-bottom:10px;}
-  .blog-card .meta{font-size:12.5px;color:#8A8A83;font-family:var(--en);direction:ltr;text-align:right;}
+.pillar{
+  position:relative;
+  background:var(--white);
+  padding:38px 28px 32px;
+  overflow:hidden;
+  opacity:0; transform:translateY(18px);
+  transition:transform .3s ease, opacity .5s ease, background .3s ease;
+}
+.pillars.in .pillar{opacity:1; transform:translateY(0);}
+.pillars .pillar:nth-child(1){transition-delay:.05s;}
+.pillars .pillar:nth-child(2){transition-delay:.13s;}
+.pillars .pillar:nth-child(3){transition-delay:.21s;}
+.pillars .pillar:nth-child(4){transition-delay:.29s;}
 
-  .faq-list{max-width:820px;}
-  .faq-item{border-bottom:1px solid var(--line);}
-  .faq-q{
-    display:flex;align-items:center;justify-content:space-between;gap:20px;
-    padding:26px 4px; font-size:17px; font-weight:600; text-align:right;
-    width:100%;
-  }
-  .faq-q .plus{width:22px;height:22px;flex-shrink:0;position:relative;}
-  .faq-q .plus::before, .faq-q .plus::after{
-    content:''; position:absolute; background:var(--ink); border-radius:2px; transition:transform .3s ease, opacity .3s ease;
-  }
-  .faq-q .plus::before{top:50%;right:0;left:0;height:2px;margin-top:-1px;}
-  .faq-q .plus::after{right:50%;top:0;bottom:0;width:2px;margin-right:-1px;}
-  .faq-item.open .plus::after{transform:rotate(90deg); opacity:0;}
-  .faq-item.open .plus::before{background:var(--emerald);}
-  .faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;}
-  .faq-a p{padding:0 4px 26px;font-size:15px;color:#4B4B45;max-width:680px;}
+/* الرقم الشبحي في الخلفية */
+.pillar-num{
+  position:absolute;
+  top:6px; left:16px;
+  font-family:var(--en);
+  font-size:72px;
+  font-weight:800;
+  line-height:1;
+  color:var(--ink);
+  opacity:.06;
+  transition:opacity .35s ease, transform .35s ease;
+  pointer-events:none;
+  direction:ltr;
+}
+.pillar:hover .pillar-num{
+  opacity:.1;
+  transform:translateY(-4px);
+}
 
+/* الخط الجانبي اللي بيكبر */
+.pillar-bar{
+  position:absolute;
+  top:0; right:0;
+  width:3px; height:0;
+  background:var(--orange);
+  transition:height .4s ease;
+}
+.pillar:hover .pillar-bar{height:100%;}
+
+.pillar-icon{
+  position:relative;
+  z-index:1;
+  width:56px; height:56px;
+  border:1.5px solid var(--line);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:22px;
+  transition:border-color .3s ease, background .3s ease, transform .35s ease;
+}
+.pillar-icon svg{width:26px;height:26px;color:var(--orange); transition:transform .4s ease;}
+.pillar:hover .pillar-icon{
+  border-color:var(--orange);
+  background:var(--emerald-tint, rgba(0,0,0,.02));
+  transform:scale(1.06);
+}
+.pillar:hover .pillar-icon svg{transform:rotate(-8deg);}
+
+.pillar h4{
+  position:relative; z-index:1;
+  font-size:17px; font-weight:700; margin-bottom:10px;
+}
+.pillar p{
+  position:relative; z-index:1;
+  font-size:14px; color:#5A5A54; line-height:1.7;
+}
+.blog-editorial{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:0;
+  border:1px solid var(--line);
+  opacity:0; transform:translateY(18px);
+  transition:opacity .6s ease, transform .5s ease;
+}
+.blog-editorial.in{opacity:1; transform:translateY(0);}
+@media(max-width:860px){
+  .blog-editorial{grid-template-columns:1fr;}
+}
+
+/* ===== المقال المميز ===== */
+.feature-article{
+  display:flex;
+  flex-direction:column;
+  text-decoration:none;
+  color:var(--ink);
+  border-left:1px solid var(--line);
+  background:var(--bg);
+  overflow:hidden;
+}
+@media(max-width:860px){.feature-article{border-left:none; border-bottom:1px solid var(--line);}}
+
+.fa-visual{
+  position:relative;
+  height:280px;
+  background-size:cover;
+  background-position:center;
+  overflow:hidden;
+}
+
+/* الصورة بتتكبر شوية عند الهفر */
+.fa-visual::after{
+  content:"";
+  position:absolute; inset:-4px;
+  background:inherit;
+  background-size:cover;
+  background-position:center;
+  transition:transform .7s cubic-bezier(.2,.8,.2,1);
+  z-index:0;
+}
+.feature-article:hover .fa-visual::after{transform:scale(1.08);}
+
+/* أوفرلاي متدرج عشان النصوص تبان واضحة فوق الصورة */
+.fa-visual-overlay{
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(10,20,15,.08) 0%, rgba(8,16,12,.05) 40%, rgba(6,12,9,.55) 100%);
+  z-index:1;
+  transition:background .35s ease;
+}
+.feature-article:hover .fa-visual-overlay{
+  background:linear-gradient(180deg, rgba(10,20,15,.15) 0%, rgba(8,16,12,.1) 40%, rgba(6,12,9,.65) 100%);
+}
+
+/* الكاتيجوري كبادج عائم على الصورة */
+.fa-badge{
+  position:absolute; top:18px; right:18px; z-index:2;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(4px);
+  color:var(--emerald-deep);
+  font-size:11.5px; font-weight:700;
+  padding:6px 14px;
+  border-radius:999px;
+  letter-spacing:.02em;
+}
+
+/* الرقم المرجعي شفاف في الزاوية التانية */
+.fa-index{
+  position:absolute; bottom:16px; left:18px; z-index:2;
+  font-family:var(--en); direction:ltr;
+  font-size:13px; font-weight:700; letter-spacing:.08em;
+  color:rgba(255,255,255,.75);
+}
+
+/* فريم صغير زخرفي في الزاوية العلوية الشمال */
+.fa-corner{
+  position:absolute; top:16px; left:16px; z-index:2;
+  width:22px; height:22px;
+  border-top:1.5px solid rgba(255,255,255,.6);
+  border-left:1.5px solid rgba(255,255,255,.6);
+  opacity:0;
+  transform:translate(4px,4px);
+  transition:opacity .4s ease, transform .4s ease;
+}
+.feature-article:hover .fa-corner{
+  opacity:1;
+  transform:translate(0,0);
+}
+
+.fa-body{padding:28px 34px 30px;}
+.fa-body h3{
+  font-size:23px; font-weight:800; line-height:1.45; margin-bottom:12px;
+  transition:color .25s ease;
+}
+.feature-article:hover .fa-body h3{color:var(--emerald-deep);}
+.fa-body p{font-size:14px; color:#6b6b64; line-height:1.75; margin-bottom:20px;}
+
+.fa-meta{
+  display:flex; align-items:center; gap:8px;
+  font-size:12.5px; color:#8A8A83; font-family:var(--en); direction:ltr; justify-content:flex-end;
+}
+.fa-meta .dot{opacity:.5;}
+.fa-arrow{
+  margin-inline-start:auto;
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:inherit; direction:rtl;
+  font-size:13px; font-weight:700; color:var(--ink);
+  padding-inline-start:14px;
+}
+.fa-arrow svg{width:14px;height:14px; transition:transform .3s ease;}
+.feature-article:hover .fa-arrow svg{transform:translateX(4px);}
+
+/* ===== قائمة القراءة ===== */
+.reading-list{
+  display:flex;
+  flex-direction:column;
+  background:var(--white);
+}
+.rl-row{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  padding:26px 28px;
+  text-decoration:none;
+  color:var(--ink);
+  border-bottom:1px solid var(--line);
+  overflow:hidden;
+  transition:background .3s ease;
+}
+.reading-list a:last-child{border-bottom:none;}
+
+.rl-row::before{
+  content:"";
+  position:absolute; inset:0;
+  background:var(--emerald-tint);
+  transform:scaleX(0);
+  transform-origin:right;
+  transition:transform .35s ease;
+  z-index:0;
+}
+[dir="ltr"] .rl-row::before{transform-origin:left;}
+.rl-row:hover::before{transform:scaleX(1);}
+
+.rl-num{
+  position:relative; z-index:1;
+  font-family:var(--en); direction:ltr;
+  font-size:13px; font-weight:700; color:#B4B4AC;
+  flex-shrink:0;
+  transition:color .3s ease;
+}
+.rl-row:hover .rl-num{color:var(--emerald-deep);}
+
+.rl-text{position:relative; z-index:1; flex:1; min-width:0;}
+.rl-cat{font-size:11px; font-weight:700; color:var(--emerald); margin-bottom:6px;}
+.rl-text h4{font-size:15.5px; font-weight:700; line-height:1.5; margin-bottom:6px;}
+.rl-meta{font-size:12px; color:#8A8A83; font-family:var(--en); direction:ltr; text-align:right;}
+
+.rl-arrow{
+  position:relative; z-index:1;
+  width:16px; height:16px; flex-shrink:0; color:var(--ink);
+  transition:transform .3s ease;
+}
+.rl-row:hover .rl-arrow{transform:translateX(-5px); color:var(--emerald-deep);}
+[dir="ltr"] .rl-row:hover .rl-arrow{transform:translateX(5px);}
+
+.rl-more{background:var(--bg);}
+.rl-more .rl-num{color:var(--orange); font-size:18px; font-weight:400;}
+.rl-more h4{color:var(--ink);}
+.faq-layout{
+  display:grid;
+  grid-template-columns:.85fr 1.15fr;
+  gap:56px;
+  align-items:stretch;
+}
+@media(max-width:860px){
+  .faq-layout{grid-template-columns:1fr; gap:32px;}
+}
+
+.faq-list{ order:1; }
+.faq-visual{ order:2; }
+
+/* ===== الصورة ===== */
+.faq-visual{
+  position:relative;
+  border-radius:10px;
+  overflow:hidden;
+  height:100%;
+  min-height:0;
+}
+.faq-visual img{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .6s ease;
+}
+.faq-visual:hover img{transform:scale(1.05);}
+
+@media(max-width:860px){
+  .faq-visual{height:280px;}
+}
+
+.faq-visual-overlay{
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(10,20,15,.05) 0%, rgba(6,12,9,.65) 100%);
+}
+
+.faq-visual-badge{
+  position:absolute; bottom:24px; left:24px; right:24px;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(4px);
+  border-radius:8px;
+  padding:18px 22px;
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+}
+.fb-num{
+  font-family:var(--en); direction:ltr;
+  font-size:26px; font-weight:800; color:var(--emerald-deep);
+}
+.fb-label{font-size:13.5px; color:#4B4B45; font-weight:600;}
+
+@media(max-width:860px){
+  .faq-visual{position:static; height:280px;}
+}
+
+/* ===== القائمة (زي ما هي مع تعديل بسيط للـ max-width) ===== */
+.faq-list{max-width:none;}
+.faq-item{border-bottom:1px solid var(--line);}
+.faq-q{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:26px 4px; font-size:17px; font-weight:600; text-align:right;
+  width:100%;
+}
+.faq-q .plus{width:22px;height:22px;flex-shrink:0;position:relative;}
+.faq-q .plus::before, .faq-q .plus::after{
+  content:''; position:absolute; background:var(--ink); border-radius:2px; transition:transform .3s ease, opacity .3s ease;
+}
+.faq-q .plus::before{top:50%;right:0;left:0;height:2px;margin-top:-1px;}
+.faq-q .plus::after{right:50%;top:0;bottom:0;width:2px;margin-right:-1px;}
+.faq-item.open .plus::after{transform:rotate(90deg); opacity:0;}
+.faq-item.open .plus::before{background:var(--emerald);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.faq-a p{padding:0 4px 26px;font-size:15px;color:#4B4B45;max-width:680px;}
   .form-shell{
     background:var(--white); border:1px solid var(--line); border-radius:6px; padding:52px;
     box-shadow:var(--shadow);
@@ -461,46 +1091,256 @@
 
   .portal-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
   @media(max-width:700px){.portal-grid{grid-template-columns:1fr;}}
-  .portal-card{
-    background:var(--ink); color:var(--white); padding:38px; border-radius:6px;
-    display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;
-    transition:transform .3s ease;
-  }
-  .portal-card:hover{transform:translateY(-4px);}
+.portal-card{
+  background:var(--emerald-deep); color:var(--white); padding:38px; border-radius:6px;
+  display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;
+  transition:transform .3s ease;
+  position:relative; overflow:hidden;
+}
+.portal-card:hover{transform:translateY(-4px);}
   .portal-card h4{font-size:19px;font-weight:700;margin-bottom:8px;}
   .portal-card p{font-size:14px;color:#B9B9B2;max-width:320px;}
 
-  .sector-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
-  @media(max-width:860px){.sector-strip{grid-template-columns:1fr 1fr;}}
-  .sector-cell{
-    background:var(--white);padding:34px 24px; transition:background .25s ease, transform .3s ease;
-    opacity:0; transform:translateY(16px);
+  .portal-card-outline{
+  background:transparent;
+  border:2px solid var(--orange);
+  color:var(--ink, #1a1a1a);
+}
+.portal-card-outline h4{
+  color:var(--orange);
+}
+.portal-card-outline p{
+  color:#6b6b66;
+}
+.btn-outline-orange{
+  background:var(--orange);
+  color:#fff;
+  padding:10px 22px;
+  border-radius:4px;
+  font-weight:700;
+  transition:all .3s ease;
+}
+.btn-outline-orange:hover{
+  border:1px solid var(--orange);
+  color:var(--orange);
+  background:transparent;
+}
+
+.btn-fill-white{
+  background:var(--white);
+  color:var(--emerald-deep);
+  border:1.5px solid var(--white);
+  padding:10px 22px;
+  border-radius:4px;
+  font-weight:700;
+  transition:all .3s ease;
+}
+.btn-fill-white:hover{
+  background:transparent;
+  color:var(--white);
+  border-color:var(--white);
+}
+
+.sector-strip{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+}
+@media(max-width:860px){
+  .sector-strip{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:520px){
+  .sector-strip{grid-template-columns:1fr;}
+}
+
+.sector-cell{
+  position:relative;
+  min-height:340px;
+  background-size:cover;
+  background-position:center;
+  overflow:hidden;
+  cursor:pointer;
+  opacity:0; transform:translateY(16px);
+  transition:transform .3s ease, opacity .5s ease;
+  border-radius: 6px;
+}
+.sector-strip.in .sector-cell{opacity:1; transform:translateY(0);}
+.sector-strip .sector-cell:nth-child(1){transition-delay:.05s;}
+.sector-strip .sector-cell:nth-child(2){transition-delay:.13s;}
+.sector-strip .sector-cell:nth-child(3){transition-delay:.21s;}
+.sector-strip .sector-cell:nth-child(4){transition-delay:.29s;}
+
+/* الصورة نفسها بتتكبر عن طريق pseudo-element عشان مايأثرش على المحتوى */
+.sector-grid{
+  display:flex;
+  flex-direction:column;
+  gap:70px;   /* ← بين row-a و row-b */
+}
+
+.sector-row{
+  display:flex;
+  gap:6px;   /* ← بين الكارت الصغير والكبير جوه نفس الصف */
+  height:280px;
+}
+@media(max-width:640px){
+  .sector-row{
+    flex-direction:column;
+    height:auto;
   }
-  .sector-strip.in .sector-cell{opacity:1; transform:translateY(0);}
-  .sector-strip .sector-cell:nth-child(1){transition-delay:.05s;}
-  .sector-strip .sector-cell:nth-child(2){transition-delay:.13s;}
-  .sector-strip .sector-cell:nth-child(3){transition-delay:.21s;}
-  .sector-strip .sector-cell:nth-child(4){transition-delay:.29s;}
-  .sector-cell:hover{background:var(--emerald-tint); transform:translateY(-3px);}
-  .sector-cell .icon{width:32px;height:32px;color:var(--emerald);margin-bottom:16px; transition:transform .35s ease;}
-  .sector-cell:hover .icon{transform:scale(1.12);}
-  .sector-cell h4{font-size:16px;font-weight:700;margin-bottom:6px;}
-  .sector-cell p{font-size:13px;color:#5A5A54;}
-  .stats-row{display:flex;gap:56px;flex-wrap:wrap;margin-top:56px;}
+}
+
+/* نسب غير متساوية: كارت صغير وكارت كبير في كل صف، معكوسة بين الصفين */
+.sector-cell.cell-sm{ flex:1; }
+.sector-cell.cell-lg{ flex:1.65; }
+
+.sector-cell{
+  position:relative;
+  background-size:cover;
+  background-position:center;
+  overflow:hidden;
+  cursor:pointer;
+  opacity:0; transform:translateY(24px) scale(.97);
+  transition:
+    flex-grow .6s cubic-bezier(.22,.9,.32,1.1),
+    transform .35s cubic-bezier(.2,.8,.2,1),
+    opacity .6s ease;
+}
+@media(max-width:640px){
+  .sector-cell{ min-height:220px; flex:1 1 auto !important; }
+}
+
+/* دخول الكروت بمدة وتتابع أوضح */
+.sector-grid.in .sector-cell{opacity:1; transform:translateY(0) scale(1);}
+.row-a .sector-cell:nth-child(1){transition-delay:.08s;}
+.row-a .sector-cell:nth-child(2){transition-delay:.2s;}
+.row-b .sector-cell:nth-child(1){transition-delay:.32s;}
+.row-b .sector-cell:nth-child(2){transition-delay:.44s;}
+
+/* هفر: الكارت تحت الماوس بياخد مساحة أكبر بوضوح، بمدة أبطأ شوية عشان الحركة تبقى ناعمة */
+.sector-row:hover .sector-cell{ flex-grow:1; transition-duration:.7s; transition-delay:0s; }
+.sector-row:hover .sector-cell.cell-sm{ flex-grow:0.8; }
+.sector-row:hover .sector-cell.cell-lg{ flex-grow:1.65; }
+.sector-row:hover .sector-cell:hover{ flex-grow:2.6 !important; }
+
+/* الصورة بتتكبر شوية جوه الكارت بمدة أطول لإحساس أنعم */
+.sector-cell::before{
+  content:"";
+  position:absolute; inset:0;
+  background:inherit;
+  background-size:cover;
+  background-position:center;
+  transition:transform 0.5s cubic-bezier(.2,.8,.2,1);
+  z-index:0;
+}
+.sector-cell:hover::before{
+  transform:scale(1.08);
+}
+
+.sector-overlay{
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(10,20,15,.05) 0%, rgba(8,16,12,.55) 65%, rgba(6,12,9,.85) 100%);
+  transition:background .4s ease;
+  z-index:1;
+}
+.sector-cell:hover .sector-overlay{
+  background:linear-gradient(180deg, rgba(10,20,15,.25) 0%, rgba(8,16,12,.7) 55%, rgba(6,12,9,.92) 100%);
+}
+
+.sector-content{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:28px 24px;
+  color:#fff;
+  white-space:nowrap;
+  overflow:hidden;
+}
+.sector-content h4{
+  font-size:20px;
+  font-weight:800;
+  margin-bottom:6px;
+  font-style:italic;
+  white-space:normal;
+  transition:font-size .4s ease;
+}
+.sector-content p{
+  font-size:13px;
+  color:rgba(255,255,255,.8);
+  max-height:0;
+  opacity:0;
+  overflow:hidden;
+  white-space:normal;
+  transition:max-height .4s ease, opacity .35s ease, margin .4s ease;
+}
+.sector-cell:hover .sector-content p{
+  max-height:60px;
+  opacity:1;
+  margin-bottom:12px;
+}
+
+.sector-more{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:13px;
+  font-weight:600;
+  color:var(--emerald, #16a34a);
+  background:#fff;
+  padding:8px 16px;
+  border-radius:999px;
+  width:fit-content;
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity .35s ease .06s, transform .35s ease .06s;
+}
+.sector-cell:hover .sector-more{
+  opacity:1;
+  transform:translateY(0);
+}
+.sector-more svg{width:14px;height:14px;}
+
+.stats-row{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:24px;
+  margin-top:56px;
+  width:100%;
+}
+@media(max-width:760px){
+  .stats-row{grid-template-columns:repeat(2, 1fr); gap:40px;}
+}
+.stat{
+  text-align:center;
+}
   .stat b{font-family:var(--en);font-size:38px;font-weight:800;color:var(--emerald-deep);direction:ltr;display:block;}
   .stat span{font-size:14px;color:#5A5A54;}
 
-  footer{background:var(--ink);color:#D7D7D2;padding-top:80px;}
-  .footer-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:40px;padding-bottom:56px;border-bottom:1px solid rgba(255,255,255,.12);}
-  @media(max-width:900px){.footer-top{grid-template-columns:1fr 1fr;}}
-  @media(max-width:520px){.footer-top{grid-template-columns:1fr;}}
-  .footer-brand img{height:40px;margin-bottom:18px;}
-  .footer-brand p{font-size:14px;color:#A9A9A3;max-width:260px;}
-  footer h5{font-size:15.5px;font-weight:700;color:var(--white);margin-bottom:19px;letter-spacing:.1px;}
-  footer ul li{margin-bottom:12px;font-size:14.5px;}
-  footer ul li a:hover{color:var(--emerald);}
-  .footer-bottom{display:flex;justify-content:space-between;align-items:center;padding:26px 0;font-size:13px;color:#8C8C87;flex-wrap:wrap;gap:10px;}
-  .footer-bottom .en{font-family:var(--body-en);direction:ltr;}
+footer{
+  background:var(--bg);
+  color:#5A5A54;
+  padding-top:80px;
+  position:relative;
+}
+footer::before{
+  content:'';
+  position:absolute; top:0; right:0; left:0; height:3px;
+  background:linear-gradient(90deg, var(--emerald), var(--orange));
+}
+.footer-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:40px;padding-bottom:56px;border-bottom:1px solid var(--line);}
+@media(max-width:900px){.footer-top{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.footer-top{grid-template-columns:1fr;}}
+.footer-brand img{height:40px;margin-bottom:18px;}
+.footer-brand p{font-size:14px;color:#7A7A74;max-width:260px;}
+footer h5{font-size:15.5px;font-weight:700;color:var(--ink);margin-bottom:19px;letter-spacing:.1px;}
+footer ul li{margin-bottom:12px;font-size:14.5px;}
+footer ul li a:hover{color:var(--emerald-deep);}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding:26px 0;font-size:13px;color:#8A8A83;flex-wrap:wrap;gap:10px;}
+.footer-bottom .en{font-family:var(--body-en);direction:ltr;}
 
   .reveal{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
   .reveal.in{opacity:1; transform:translateY(0);}
@@ -613,39 +1453,215 @@
       <h2><span class="accent">خدماتنا</span> الهندسية التخصصية</h2>
       <p>مراجعة فنية شاملة لكل تخصص هندسي، ينفذها فريق مستقل قبل بدء التنفيذ لتفادي المخاطر والتكاليف غير المخطط لها.</p>
     </div>
+
     <div class="services-grid reveal">
-      <div class="service-card"><span class="num">01</span>
-        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="8" y="8" width="32" height="32"/><path d="M8 20h32M20 8v32"/></svg>
-        <h3>مراجعة التصميم المعماري</h3><p>فحص المخططات المعمارية ومطابقتها للاشتراطات البلدية وكود البناء.</p>
+
+      <!-- 01 معماري: واجهة مبنى بباب ونافذة -->
+      <div class="service-card">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <span class="num">01</span>
+            <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M10 42V18L24 8l14 10v24"/>
+              <path d="M18 42V26h12v16"/>
+              <path d="M10 42h28"/>
+              <path d="M15 20h4M29 20h4"/>
+            </svg>
+            <h3>مراجعة التصميم المعماري</h3>
+            <p>فحص المخططات المعمارية ومطابقتها للاشتراطات البلدية وكود البناء.</p>
+          </div>
+          <div class="flip-face flip-back">
+            <span class="num">01</span>
+            <h4>مراجعة التصميم المعماري</h4>
+            <p>مراجعة تفصيلية للمخططات المعمارية والواجهات، والتأكد من مطابقتها لاشتراطات البلدية والدفاع المدني قبل الترخيص.</p>
+            <ul>
+              <li>مطابقة الارتدادات والارتفاعات</li>
+              <li>مراجعة المساقط والواجهات</li>
+              <li>التحقق من كود البناء السعودي</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="service-card"><span class="num">02</span>
-        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 38V16l14-8 14 8v22"/><path d="M10 26h28M18 38V26M30 38V26"/></svg>
-        <h3>مراجعة التصميم الإنشائي</h3><p>التحقق من السلامة الإنشائية والأحمال ومطابقة الحسابات الهندسية.</p>
+
+      <!-- 02 إنشائي: هيكل جمالوني (truss) -->
+      <div class="service-card">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <span class="num">02</span>
+            <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M6 34L24 10L42 34"/>
+              <path d="M6 34h36"/>
+              <path d="M15 34V22M24 34V16M33 34V22"/>
+            </svg>
+            <h3>مراجعة التصميم الإنشائي</h3>
+            <p>التحقق من السلامة الإنشائية والأحمال ومطابقة الحسابات الهندسية.</p>
+          </div>
+          <div class="flip-face flip-back">
+            <span class="num">02</span>
+            <h4>مراجعة التصميم الإنشائي</h4>
+            <p>تدقيق الحسابات الإنشائية والمخططات للتأكد من قدرتها على تحمل الأحمال وفق الكود السعودي للتصميم الإنشائي.</p>
+            <ul>
+              <li>مراجعة الأحمال والتسليح</li>
+              <li>فحص المخططات الإنشائية</li>
+              <li>التحقق من الأكواد المعتمدة</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="service-card"><span class="num">03</span>
-        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M26 6l-14 20h10l-4 16 16-22H24z"/></svg>
-        <h3>مراجعة الأنظمة الكهربائية</h3><p>تدقيق التصاميم الكهربائية وفق كود SBC 401 ومعايير السلامة.</p>
+
+      <!-- 03 كهربائي: صاعقة (بدون تغيير، مناسبة أصلًا) -->
+      <div class="service-card">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <span class="num">03</span>
+            <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M26 6l-14 20h10l-4 16 16-22H24z"/></svg>
+            <h3>مراجعة الأنظمة الكهربائية</h3>
+            <p>تدقيق التصاميم الكهربائية وفق كود SBC 401 ومعايير السلامة.</p>
+          </div>
+          <div class="flip-face flip-back">
+            <span class="num">03</span>
+            <h4>مراجعة الأنظمة الكهربائية</h4>
+            <p>مراجعة الأحمال الكهربائية واللوحات والتغذية للتأكد من الكفاءة والسلامة وفق كود SBC 401.</p>
+            <ul>
+              <li>حساب الأحمال الكهربائية</li>
+              <li>مراجعة اللوحات والمغذيات</li>
+              <li>التحقق من التأريض والسلامة</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="service-card"><span class="num">04</span>
-        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M24 8c6 8 10 13 10 19a10 10 0 1 1-20 0c0-6 4-11 10-19z"/></svg>
-        <h3>مراجعة أنظمة التكييف</h3><p>تقييم أنظمة التهوية والتكييف من حيث الكفاءة والتوافق الفني.</p>
+
+      <!-- 04 تكييف: مروحة/ريش تهوية -->
+      <div class="service-card">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <span class="num">04</span>
+            <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="24" cy="24" r="3"/>
+              <path d="M24 24c0-8 6-12 10-10s2 12-6 12"/>
+              <path d="M24 24c8 0 12 6 10 10s-12 2-12-6"/>
+              <path d="M24 24c0 8-6 12-10 10s-2-12 6-12"/>
+              <path d="M24 24c-8 0-12-6-10-10s12-2 12 6"/>
+            </svg>
+            <h3>مراجعة أنظمة التكييف</h3>
+            <p>تقييم أنظمة التهوية والتكييف من حيث الكفاءة والتوافق الفني.</p>
+          </div>
+          <div class="flip-face flip-back">
+            <span class="num">04</span>
+            <h4>مراجعة أنظمة التكييف</h4>
+            <p>مراجعة أحمال التكييف والتهوية والتأكد من كفاءة الأنظمة المختارة وتوافقها مع التصميم المعماري.</p>
+            <ul>
+              <li>حساب الأحمال الحرارية</li>
+              <li>مراجعة مسارات الدكت</li>
+              <li>تقييم كفاءة الطاقة</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="service-card"><span class="num">05</span>
-        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="18" r="6"/><path d="M24 24v18M16 34h16"/></svg>
-        <h3>السباكة والصرف الصحي</h3><p>مراجعة شبكات المياه والصرف ومطابقتها للاشتراطات الصحية.</p>
+
+      <!-- 05 سباكة: صنبور وقطرة ماء -->
+      <div class="service-card">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <span class="num">05</span>
+            <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M12 14h10a6 6 0 0 1 6 6v2h8"/>
+              <circle cx="12" cy="14" r="3"/>
+              <path d="M22 26v4a6 6 0 0 1-6 6"/>
+              <path d="M24 38c0 3-2.5 5-2.5 5s-2.5-2-2.5-5a2.5 2.5 0 0 1 5 0z"/>
+            </svg>
+            <h3>السباكة والصرف الصحي</h3>
+            <p>مراجعة شبكات المياه والصرف ومطابقتها للاشتراطات الصحية.</p>
+          </div>
+          <div class="flip-face flip-back">
+            <span class="num">05</span>
+            <h4>السباكة والصرف الصحي</h4>
+            <p>فحص شبكات التغذية بالمياه والصرف الصحي والتأكد من مطابقتها للاشتراطات الصحية والبيئية المعتمدة.</p>
+            <ul>
+              <li>مراجعة أقطار المواسير</li>
+              <li>فحص شبكات الصرف</li>
+              <li>التحقق من نقاط التصريف</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="service-card"><span class="num">06</span>
-        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M24 6c8 10-4 12-4 20a4 4 0 0 0 8 0c0-3-2-4-2-8 4 3 6 8 6 12a10 10 0 1 1-20 0C12 20 18 14 24 6z"/></svg>
-        <h3>الحماية من الحريق والسلامة</h3><p>فحص أنظمة الإنذار والإخماد ومسارات الإخلاء العامة.</p>
+
+      <!-- 06 حريق: لهب واضح -->
+      <div class="service-card">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <span class="num">06</span>
+            <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M24 6c8 10-4 12-4 20a4 4 0 0 0 8 0c0-3-2-4-2-8 4 3 6 8 6 12a10 10 0 1 1-20 0C12 20 18 14 24 6z"/>
+            </svg>
+            <h3>الحماية من الحريق والسلامة</h3>
+            <p>فحص أنظمة الإنذار والإخماد ومسارات الإخلاء العامة.</p>
+          </div>
+          <div class="flip-face flip-back">
+            <span class="num">06</span>
+            <h4>الحماية من الحريق والسلامة</h4>
+            <p>مراجعة أنظمة الإنذار والإخماد المبكر ومسارات الإخلاء للتأكد من مطابقتها لمتطلبات الدفاع المدني.</p>
+            <ul>
+              <li>فحص أنظمة الإنذار المبكر</li>
+              <li>مراجعة شبكات الإخماد</li>
+              <li>التحقق من مخارج الطوارئ</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="service-card"><span class="num">07</span>
-        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M24 6v6M24 36v6M6 24h6M36 24h6M11 11l4 4M33 33l4 4M11 37l4-4M33 15l4-4"/><circle cx="24" cy="24" r="9"/></svg>
-        <h3>كفاءة الطاقة والعزل الحراري</h3><p>تقييم مطابقة العزل الحراري ومتطلبات كفاءة الطاقة.</p>
+
+      <!-- 07 كفاءة الطاقة والعزل: طبقات عزل داخل جدار -->
+      <div class="service-card">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <span class="num">07</span>
+            <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M10 8v32M38 8v32"/>
+              <path d="M10 15c4 3 4-3 8 0s4-3 8 0 4-3 8 0 4-3 4 0"/>
+              <path d="M10 24c4 3 4-3 8 0s4-3 8 0 4-3 8 0 4-3 4 0"/>
+              <path d="M10 33c4 3 4-3 8 0s4-3 8 0 4-3 8 0 4-3 4 0"/>
+            </svg>
+            <h3>كفاءة الطاقة والعزل الحراري</h3>
+            <p>تقييم مطابقة العزل الحراري ومتطلبات كفاءة الطاقة.</p>
+          </div>
+          <div class="flip-face flip-back">
+            <span class="num">07</span>
+            <h4>كفاءة الطاقة والعزل الحراري</h4>
+            <p>تقييم مواد العزل الحراري ومطابقتها لمتطلبات كفاءة الطاقة في الأنظمة السعودية للبناء الموفر للطاقة.</p>
+            <ul>
+              <li>مراجعة سماكة وطبقات العزل</li>
+              <li>التحقق من معامل الأداء الحراري</li>
+              <li>مطابقة كود توفير الطاقة</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="service-card"><span class="num">08</span>
-        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M24 6l16 6v10c0 10-7 17-16 20-9-3-16-10-16-20V12z"/><path d="M18 24l4 4 8-8"/></svg>
-        <h3>المطابقة العامة للكود</h3><p>تقرير شامل يجمع نتائج كل التخصصات في وثيقة مطابقة واحدة.</p>
+
+      <!-- 08 مطابقة عامة: درع وعلامة صح -->
+      <div class="service-card">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <span class="num">08</span>
+            <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M24 6l16 6v10c0 10-7 17-16 20-9-3-16-10-16-20V12z"/>
+              <path d="M18 24l4 4 8-8"/>
+            </svg>
+            <h3>المطابقة العامة للكود</h3>
+            <p>تقرير شامل يجمع نتائج كل التخصصات في وثيقة مطابقة واحدة.</p>
+          </div>
+          <div class="flip-face flip-back">
+            <span class="num">08</span>
+            <h4>المطابقة العامة للكود</h4>
+            <p>تجميع نتائج مراجعة كل التخصصات في تقرير موحد يوضح نقاط المطابقة والملاحظات قبل بدء التنفيذ.</p>
+            <ul>
+              <li>تقرير موحد لكل التخصصات</li>
+              <li>تصنيف الملاحظات حسب الخطورة</li>
+              <li>توصيات قبل التنفيذ</li>
+            </ul>
+          </div>
+        </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -657,13 +1673,83 @@
       <h2>كلفة <span class="accent">الخطأ التصميمي</span> تتضاعف مع الوقت</h2>
       <p>كل مرحلة يتأخر فيها اكتشاف الخلل الهندسي تضاعف تكلفة إصلاحه — المراجعة المستقلة قبل التنفيذ توفرها بالكامل.</p>
     </div>
-    <div class="cost-banners reveal">
-      <div class="cost-stage"><div class="bar" style="width:40%"></div><h4>مرحلة التصميم</h4><p>تعديل الخطأ هنا يكلف الحد الأدنى من الوقت والمال.</p></div>
-      <div class="cost-arrow">←</div>
-      <div class="cost-stage hot"><div class="bar" style="width:70%"></div><h4>المراجعة والتقييم</h4><p>نقطة الفحص الحاسمة قبل أي التزام تنفيذي.</p></div>
-      <div class="cost-arrow">←</div>
-      <div class="cost-stage"><div class="bar" style="width:100%"></div><h4>التنفيذ والإنشاء</h4><p>اكتشاف الخلل هنا يعني هدماً وإعادة بناء وتكاليف مضاعفة.</p></div>
-    </div>
+
+  <div class="cost-flow reveal">
+
+<div class="flow-step end">
+  <div class="cost-stage">
+    <span class="stage-index">01</span>
+    <h4>مرحلة التصميم</h4>
+    <p>تعديل الخطأ هنا يكلف الحد الأدنى من الوقت والمال.</p>
+  </div>
+<div class="cost-visual">
+  <svg class="icon" viewBox="0 0 120 90" fill="none" stroke="currentColor" stroke-width="1.4">
+    <rect x="14" y="14" width="92" height="62"/>
+    <line x1="14" y1="38" x2="106" y2="38"/>
+    <line x1="14" y1="58" x2="106" y2="58"/>
+    <line x1="46" y1="14" x2="46" y2="76"/>
+    <line x1="76" y1="14" x2="76" y2="76"/>
+    <line x1="14" y1="86" x2="106" y2="86"/>
+    <line x1="14" y1="82" x2="14" y2="90"/>
+    <line x1="106" y1="82" x2="106" y2="90"/>
+  </svg>
+</div>
+</div>
+
+<div class="flow-connector c1">
+  <span class="elbow-v-start" style="left:31%; background:var(--emerald);"></span>
+  <span class="elbow-h h1"></span>
+  <span class="elbow-v v1"></span>
+  <span class="elbow-arrow a1"></span>
+</div>
+
+<div class="flow-step start">
+  <div class="cost-stage hot">
+    <span class="stage-index">02</span>
+    <h4>المراجعة والتقييم</h4>
+    <p>نقطة الفحص الحاسمة قبل أي التزام تنفيذي.</p>
+  </div>
+<div class="cost-visual">
+  <svg class="icon" viewBox="0 0 120 90" fill="none" stroke="currentColor" stroke-width="1.4">
+    <rect x="14" y="14" width="92" height="62" opacity=".45"/>
+    <line x1="14" y1="38" x2="106" y2="38" opacity=".45"/>
+    <line x1="14" y1="58" x2="106" y2="58" opacity=".45"/>
+    <line x1="46" y1="14" x2="46" y2="76" opacity=".45"/>
+    <line x1="76" y1="14" x2="76" y2="76" opacity=".45"/>
+    <circle cx="70" cy="46" r="16"/>
+    <line x1="81" y1="57" x2="94" y2="70"/>
+    <path d="M62 46l6 6 10-12" stroke-width="2"/>
+  </svg>
+</div>
+</div>
+
+
+<div class="flow-connector c2">
+  <span class="elbow-v-start" style="left:69%; background:var(--orange);"></span>
+  <span class="elbow-h h2"></span>
+  <span class="elbow-v v2"></span>
+  <span class="elbow-arrow a2"></span>
+</div>
+
+<div class="flow-step end">
+  <div class="cost-stage">
+    <span class="stage-index">03</span>
+    <h4>التنفيذ والإنشاء</h4>
+    <p>اكتشاف الخلل هنا يعني هدماً وإعادة بناء وتكاليف مضاعفة.</p>
+  </div>
+<div class="cost-visual">
+  <svg class="icon" viewBox="0 0 120 90" fill="none" stroke="currentColor" stroke-width="1.4">
+    <rect x="14" y="14" width="92" height="62"/>
+    <path d="M50 14 L58 34 L46 42 L64 58 L56 76" stroke-width="1.8"/>
+    <line x1="14" y1="86" x2="46" y2="86"/>
+    <line x1="60" y1="86" x2="106" y2="86"/>
+    <line x1="20" y1="90" x2="26" y2="82"/>
+    <line x1="68" y1="90" x2="74" y2="80"/>
+  </svg>
+</div>
+</div>
+
+</div>
   </div>
 </section>
 
@@ -693,11 +1779,45 @@
       <h2>دليل <span class="accent">كود البناء</span> السعودي</h2>
       <p>نعمل وفق الأكواد الرسمية المعتمدة لضمان مطابقة كاملة وقابلة للتوثيق.</p>
     </div>
-    <div class="sbc-list reveal">
-      <div class="sbc-card"><span class="code">SBC 1101 – 1102</span><h3>الكود السكني</h3><p>الاشتراطات الخاصة بالمباني السكنية من فيلات ودوبلكس ومجمعات سكنية.</p></div>
-      <div class="sbc-card"><span class="code">SBC 201</span><h3>الكود العام للبناء</h3><p>المتطلبات العامة للسلامة الإنشائية وتصنيف استخدامات المباني.</p></div>
-      <div class="sbc-card"><span class="code">SBC 401</span><h3>الكود الكهربائي</h3><p>اشتراطات التصميم والتنفيذ للأنظمة الكهربائية داخل المبنى.</p></div>
+
+<div class="pyramid-wrap reveal">
+
+  <div class="pyramid-row pyramid-top">
+    <div class="sbc-card tri">
+      <span class="tri-badge">01</span>
+      <div class="tri-content">
+        <span class="code">SBC 1101 – 1102</span>
+        <h3>الكود السكني</h3>
+        <p>الاشتراطات الخاصة بالمباني السكنية من فيلات ودوبلكس ومجمعات سكنية.</p>
+      </div>
     </div>
+  </div>
+
+  <!-- المثلث المقلوب في المنتصف -->
+<div class="pyramid-center">
+  <img src="./Screenshot_2026-09-13_091306-removebg-preview.png" alt="Inspection Logo" class="pyramid-logo">
+</div>
+
+  <div class="pyramid-bottom">
+    <div class="sbc-card tri">
+      <span class="tri-badge">02</span>
+      <div class="tri-content">
+        <span class="code">SBC 401</span>
+        <h3>الكود الكهربائي</h3>
+        <p>اشتراطات التصميم والتنفيذ للأنظمة الكهربائية داخل المبنى.</p>
+      </div>
+    </div>
+    <div class="sbc-card tri">
+      <span class="tri-badge">03</span>
+      <div class="tri-content">
+        <span class="code">SBC 201</span>
+        <h3>الكود العام للبناء</h3>
+        <p>المتطلبات العامة للسلامة الإنشائية وتصنيف استخدامات المباني.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
   </div>
 </section>
 
@@ -707,12 +1827,50 @@
       <div class="eyebrow-kicker">القطاعات</div>
       <h2>خبرة تمتد عبر <span class="accent">قطاعات</span> متعددة</h2>
     </div>
-    <div class="sector-strip reveal">
-      <div class="sector-cell"><svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 40V18l14-10 14 10v22"/></svg><h4>سكني</h4><p>فلل، دوبلكس، مجمعات سكنية</p></div>
-      <div class="sector-cell"><svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="10" y="8" width="28" height="34"/><path d="M16 16h4M28 16h4M16 24h4M28 24h4M16 32h4M28 32h4"/></svg><h4>تجاري</h4><p>مكاتب، مراكز تسوق، أبراج</p></div>
-      <div class="sector-cell"><svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 40V20l8-6 8 6v20M24 40V14l8-6 8 6v26"/></svg><h4>صناعي</h4><p>منشآت ومصانع ومستودعات</p></div>
-      <div class="sector-cell"><svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="8" y="18" width="32" height="20"/><path d="M18 18v-6h12v6"/></svg><h4>حكومي</h4><p>منشآت ومرافق عامة</p></div>
+
+    <div class="sector-grid reveal">
+
+      <div class="sector-row row-a">
+        <div class="sector-cell cell-sm" style="background-image:url('./WhatsApp\ Image\ 2026-09-13\ at\ 4.14.26\ PM\ \(3\).jpeg')">
+          <div class="sector-overlay"></div>
+          <div class="sector-content">
+            <h4>سكني</h4>
+            <p>فلل، دوبلكس، مجمعات سكنية</p>
+            <span class="sector-more">المزيد <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+          </div>
+        </div>
+        <div class="sector-cell cell-lg" style="background-image:url('./WhatsApp\ Image\ 2026-09-13\ at\ 4.14.26\ PM\ \(2\).jpeg')">
+          <div class="sector-overlay"></div>
+          <div class="sector-content">
+            <h4>تخطيط عمراني ومناظر طبيعية</h4>
+            <p>مساحات عامة وحدائق ومحاور مشاة</p>
+            <span class="sector-more">المزيد <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sector-row row-b">
+        <div class="sector-cell cell-lg" style="background-image:url('./pexels-2153622414-32817699.jpg')">
+          <div class="sector-overlay"></div>
+          <div class="sector-content">
+            <h4>البنية التحتية</h4>
+            <p>شبكات ومرافق ومنشآت خدمية</p>
+            <span class="sector-more">المزيد <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+          </div>
+        </div>
+        <div class="sector-cell cell-sm" style="background-image:url('./pexels-eslames1-36099490.jpg')">
+          <div class="sector-overlay"></div>
+          <div class="sector-content">
+            <h4>تصميم الطرق</h4>
+            <p>طرق وتقاطعات وشبكات نقل</p>
+            <span class="sector-more">المزيد <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+          </div>
+        </div>
+      </div>
+
     </div>
+
+    
   </div>
 </section>
 
@@ -732,18 +1890,18 @@
 </section>
 
 <div class="audience">
-  <div class="audience-panel reveal">
-    <div class="tag">لأصحاب المنازل</div>
-    <h3>هل تبني منزلك؟<br>ابدأ بمراجعة المخططات</h3>
-    <p>تأكد من مطابقة تصميم منزلك لكود البناء السعودي قبل الحفر — قرار بسيط يوفر عليك أضعاف تكلفته لاحقاً.</p>
-    <a href="#request" class="btn btn-primary">اطلع على خططنا</a>
-  </div>
+  <div class="audience-panel reveal" style="border: 1.5px solid var(--orange);">
+  <div class="tag">لأصحاب المنازل</div>
+  <h3>هل تبني منزلك؟<br>ابدأ بمراجعة المخططات</h3>
+  <p>تأكد من مطابقة تصميم منزلك لكود البناء السعودي قبل الحفر — قرار بسيط يوفر عليك أضعاف تكلفته لاحقاً.</p>
+  <a href="#request" class="btn btn-outline-orange">اطلع على خططنا</a>
+</div>
   <div class="audience-panel dark reveal">
-    <div class="tag" style="color:#F0A87C;">للمكاتب الهندسية</div>
-    <h3>مراجعة ما قبل التقديم<br>واعتماد مستقل</h3>
-    <p>شراكة فنية للمكاتب الهندسية تمنح عملاءكم طبقة توثيق إضافية وتقليل نسبة الرفض البلدي.</p>
-    <a href="#request" class="btn btn-outline-white">تحدث معنا</a>
-  </div>
+  <div class="tag" style="color:var(--white);">للمكاتب الهندسية</div>
+  <h3>مراجعة ما قبل التقديم<br>واعتماد مستقل</h3>
+  <p>شراكة فنية للمكاتب الهندسية تمنح عملاءكم طبقة توثيق إضافية وتقليل نسبة الرفض البلدي.</p>  
+  <a href="#request" class="btn btn-fill-white">تحدث معنا</a>
+</div>
 </div>
 
 <section id="why">
@@ -752,11 +1910,47 @@
       <div class="eyebrow-kicker">لماذا انسبكشن</div>
       <h2>أربعة مبادئ <span class="accent">لا نتنازل</span> عنها</h2>
     </div>
+
     <div class="pillars reveal">
-      <div class="pillar"><svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="16"/><path d="M24 8v32M8 24h32"/></svg><h4>استقلالية وحياد</h4><p>لا علاقة تنفيذية أو تجارية مع مقاولي المشروع.</p></div>
-      <div class="pillar"><svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 24c4-10 12-16 18-16s14 6 18 16c-4 10-12 16-18 16S10 34 6 24z"/><circle cx="24" cy="24" r="5"/></svg><h4>منظور تقني موضوعي</h4><p>تقييم مبني على الكود والمعايير الهندسية فقط.</p></div>
-      <div class="pillar"><svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 8h20l6 6v26H12z"/><path d="M18 20h12M18 26h12M18 32h8"/></svg><h4>نتائج قابلة للتتبع</h4><p>كل ملاحظة موثقة برقم مرجعي وتقرير رسمي.</p></div>
-      <div class="pillar"><svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="8" y="10" width="32" height="24" rx="2"/><path d="M8 18h32M16 26h6"/></svg><h4>سير عمل رقمي بالكامل</h4><p>من رفع الملفات إلى استلام التقرير، دون أوراق.</p></div>
+      <div class="pillar">
+        <span class="pillar-num">01</span>
+        <div class="pillar-bar"></div>
+        <div class="pillar-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="16"/><path d="M24 8v32M8 24h32"/></svg>
+        </div>
+        <h4>استقلالية وحياد</h4>
+        <p>لا علاقة تنفيذية أو تجارية مع مقاولي المشروع.</p>
+      </div>
+
+      <div class="pillar">
+        <span class="pillar-num">02</span>
+        <div class="pillar-bar"></div>
+        <div class="pillar-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 24c4-10 12-16 18-16s14 6 18 16c-4 10-12 16-18 16S10 34 6 24z"/><circle cx="24" cy="24" r="5"/></svg>
+        </div>
+        <h4>منظور تقني موضوعي</h4>
+        <p>تقييم مبني على الكود والمعايير الهندسية فقط.</p>
+      </div>
+
+      <div class="pillar">
+        <span class="pillar-num">03</span>
+        <div class="pillar-bar"></div>
+        <div class="pillar-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 8h20l6 6v26H12z"/><path d="M18 20h12M18 26h12M18 32h8"/></svg>
+        </div>
+        <h4>نتائج قابلة للتتبع</h4>
+        <p>كل ملاحظة موثقة برقم مرجعي وتقرير رسمي.</p>
+      </div>
+
+      <div class="pillar">
+        <span class="pillar-num">04</span>
+        <div class="pillar-bar"></div>
+        <div class="pillar-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="8" y="10" width="32" height="24" rx="2"/><path d="M8 18h32M16 26h6"/></svg>
+        </div>
+        <h4>سير عمل رقمي بالكامل</h4>
+        <p>من رفع الملفات إلى استلام التقرير، دون أوراق.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -767,19 +1961,68 @@
       <div class="eyebrow-kicker">مكتبة المعرفة</div>
       <h2><span class="accent">مقالات</span> عن كود البناء ومخالفات التصميم</h2>
     </div>
-    <div class="blog-grid reveal">
-      <div class="blog-card">
-        <div class="thumb"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="8" y="8" width="32" height="32"/><path d="M8 20h32M20 8v32"/></svg></div>
-        <div class="body"><div class="cat">كود سكني</div><h4>خمسة أخطاء شائعة في مخططات الفلل السكنية</h4><div class="meta">Aug 2026 · 4 min</div></div>
+
+    <div class="blog-editorial reveal">
+
+      <!-- المقال المميز -->
+<a href="#" class="feature-article">
+  <div class="fa-visual" style="background-image:url('./WhatsApp Image 2026-09-13 at 4.14.26 PM (3).jpeg')">
+    <div class="fa-visual-overlay"></div>
+    <span class="fa-badge">كود سكني</span>
+    <span class="fa-index">01</span>
+    <span class="fa-corner"></span>
+  </div>
+  <div class="fa-body">
+    <h3>خمسة أخطاء شائعة في مخططات الفلل السكنية</h3>
+    <p>استعراض لأكثر المخالفات تكرارًا في المخططات المقدمة للاعتماد، وكيفية تفاديها قبل التنفيذ.</p>
+    <div class="fa-meta">
+      <span>Aug 2026</span><span class="dot">·</span><span>4 min</span>
+      <span class="fa-arrow">اقرأ المقال <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+    </div>
+  </div>
+</a>
+
+      <!-- قائمة القراءة -->
+      <div class="reading-list">
+        <a href="#" class="rl-row">
+          <span class="rl-num">02</span>
+          <div class="rl-text">
+            <div class="rl-cat">SBC 401</div>
+            <h4>دليل مبسّط لاشتراطات التصميم الكهربائي</h4>
+            <div class="rl-meta">Jul 2026 · 6 min</div>
+          </div>
+          <svg class="rl-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </a>
+
+        <a href="#" class="rl-row">
+          <span class="rl-num">03</span>
+          <div class="rl-text">
+            <div class="rl-cat">سلامة</div>
+            <h4>لماذا تفشل مسارات الإخلاء في المباني السكنية</h4>
+            <div class="rl-meta">Jun 2026 · 5 min</div>
+          </div>
+          <svg class="rl-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#" class="rl-row">
+          <span class="rl-num">04</span>
+          <div class="rl-text">
+            <div class="rl-cat"> كود بناء </div>
+            <h4>أهم التعديلات في كود البناء السعودي 2026</h4>
+            <div class="rl-meta">May 2026 · 7 min</div>
+          </div>
+          <svg class="rl-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </a>
+
+        <a href="#" class="rl-row rl-more">
+          <span class="rl-num">＋</span>
+          <div class="rl-text">
+            <h4>عرض كل المقالات</h4>
+            <div class="rl-meta">مكتبة المعرفة الكاملة</div>
+          </div>
+          <svg class="rl-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </a>
       </div>
-      <div class="blog-card">
-        <div class="thumb"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M26 6l-14 20h10l-4 16 16-22H24z"/></svg></div>
-        <div class="body"><div class="cat">SBC 401</div><h4>دليل مبسّط لاشتراطات التصميم الكهربائي</h4><div class="meta">Jul 2026 · 6 min</div></div>
-      </div>
-      <div class="blog-card">
-        <div class="thumb"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M24 6c8 10-4 12-4 20a4 4 0 0 0 8 0c0-3-2-4-2-8 4 3 6 8 6 12a10 10 0 1 1-20 0C12 20 18 14 24 6z"/></svg></div>
-        <div class="body"><div class="cat">سلامة</div><h4>لماذا تفشل مسارات الإخلاء في المباني السكنية</h4><div class="meta">Jun 2026 · 5 min</div></div>
-      </div>
+
     </div>
   </div>
 </section>
@@ -790,22 +2033,34 @@
       <div class="eyebrow-kicker">أسئلة متكررة</div>
       <h2>الأسئلة <span class="accent">الأكثر</span> شيوعاً</h2>
     </div>
-    <div class="faq-list reveal" id="faqList">
-      <div class="faq-item">
-        <button class="faq-q"><span>كم يستغرق إصدار تقرير المراجعة الفنية؟</span><span class="plus"></span></button>
-        <div class="faq-a"><p>يعتمد على حجم المشروع ونوع الخدمة المطلوبة، ويتراوح متوسط المدة بين 7 إلى 14 يوم عمل من استلام المخططات كاملة.</p></div>
+
+    <div class="faq-layout reveal">
+      <div class="faq-visual">
+        <img src="./WhatsApp Image 2026-09-13 at 4.14.26 PM (4).jpeg" alt="مهندس يراجع مخططات" />
+        <div class="faq-visual-overlay"></div>
+        <div class="faq-visual-badge">
+          <span class="fb-num">+460</span>
+          <span class="fb-label">مشروع تمت مراجعته</span>
+        </div>
       </div>
-      <div class="faq-item">
-        <button class="faq-q"><span>هل تقريركم معتمد لدى الجهات البلدية؟</span><span class="plus"></span></button>
-        <div class="faq-a"><p>نعم، يصدر التقرير بصيغة رسمية موثّقة يمكن استخدامها كجزء من ملف المشروع أمام الجهات المعنية.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q"><span>هل تقدمون خدمة إعادة التقييم بعد التعديل؟</span><span class="plus"></span></button>
-        <div class="faq-a"><p>نعم، بعد استلام النسخة المعدّلة من المخططات نقوم بإعادة تقييم البنود التي تم رصدها سابقاً فقط.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q"><span>هل الخدمة متاحة للمكاتب الهندسية بشكل مستمر؟</span><span class="plus"></span></button>
-        <div class="faq-a"><p>نوفر شراكات مراجعة مستمرة للمكاتب الهندسية مع أسعار تفضيلية حسب حجم التعاون السنوي.</p></div>
+
+      <div class="faq-list" id="faqList">
+        <div class="faq-item">
+          <button class="faq-q"><span>كم يستغرق إصدار تقرير المراجعة الفنية؟</span><span class="plus"></span></button>
+          <div class="faq-a"><p>يعتمد على حجم المشروع ونوع الخدمة المطلوبة، ويتراوح متوسط المدة بين 7 إلى 14 يوم عمل من استلام المخططات كاملة.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>هل تقريركم معتمد لدى الجهات البلدية؟</span><span class="plus"></span></button>
+          <div class="faq-a"><p>نعم، يصدر التقرير بصيغة رسمية موثّقة يمكن استخدامها كجزء من ملف المشروع أمام الجهات المعنية.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>هل تقدمون خدمة إعادة التقييم بعد التعديل؟</span><span class="plus"></span></button>
+          <div class="faq-a"><p>نعم، بعد استلام النسخة المعدّلة من المخططات نقوم بإعادة تقييم البنود التي تم رصدها سابقاً فقط.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>هل الخدمة متاحة للمكاتب الهندسية بشكل مستمر؟</span><span class="plus"></span></button>
+          <div class="faq-a"><p>نوفر شراكات مراجعة مستمرة للمكاتب الهندسية مع أسعار تفضيلية حسب حجم التعاون السنوي.</p></div>
+        </div>
       </div>
     </div>
   </div>
@@ -882,9 +2137,16 @@
       <h2>بوابة العميل <span class="accent">ونافذة التحقق</span></h2>
     </div>
     <div class="portal-grid reveal">
-      <div class="portal-card"><div><h4>بوابة العميل</h4><p>تابع حالة طلبك وتقاريرك السابقة من مكان واحد.</p></div><a href="#" class="btn btn-outline-white">دخول</a></div>
-      <div class="portal-card" style="background:var(--emerald-deep);"><div><h4>نافذة التحقق</h4><p>تحقق من صحة أي تقرير صادر برقم مرجعي.</p></div><a href="#" class="btn btn-outline-white">تحقق الآن</a></div>
-    </div>
+      <div class="portal-card" style="background:var(--emerald-deep);"><div><h4>نافذة التحقق</h4><p style="color:white;">تحقق من صحة أي تقرير صادر برقم مرجعي.</p></div><a href="#" class="  btn btn-fill-white">تحقق الآن</a></div>
+      <div class="portal-card portal-card-outline">
+  <div>
+    <h4>بوابة العميل</h4>
+    <p>تابع حالة طلبك وتقاريرك السابقة من مكان واحد.</p>
+  </div>
+  <a href="#" class="btn btn-outline-orange">دخول</a>
+</div>
+
+</div>
   </div>
 </section>
 
@@ -1053,7 +2315,7 @@
         el.style.transform = '';
       });
     }
-    document.querySelectorAll('.service-card, .pillar, .blog-card, .sector-cell, .sbc-card, .portal-card, .cost-stage')
+    document.querySelectorAll('.service-card, .pillar, .blog-card, .sbc-card, .portal-card')
       .forEach(el => applyTilt(el));
 
     document.querySelectorAll('.hero-cta-row .btn').forEach(btn => {
@@ -1104,7 +2366,7 @@
     }
 
     function initIconDraw() {
-      const icons = document.querySelectorAll('.icon, .hero-blueprint');
+      const icons = document.querySelectorAll('.icon, .hero-blueprint, .cost-visual svg');
       icons.forEach(svg => {
         svg.querySelectorAll('path, circle, rect, line, polygon, polyline, ellipse').forEach(shape => {
           try {
